@@ -11,6 +11,8 @@
     "lint": "eslint --ext .ts,vue --ignore-path .gitignore --fix src && yarn tsc"
   },
   "dependencies": {
+    "@firebase/analytics": "^0.9.0",
+    "@firebase/app": "^0.9.0",
     "axios": "^1.2.2",
     "pinia": "^2.0.28",
     "vue": "^3.2.45"

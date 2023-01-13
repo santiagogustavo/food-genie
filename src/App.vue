@@ -2,8 +2,10 @@
 import HelloWorld from '@/components/HelloWorld.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import { useUserStore } from '@/stores/user';
+import { useFirebase } from '@/composables/firebase';
 
 useUserStore().fetchCurrentLocation();
+useFirebase().log('hello');
 </script>
 
 <template>

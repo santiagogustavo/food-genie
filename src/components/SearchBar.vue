@@ -11,6 +11,7 @@ import { ALIAS_SEARCH_ITEMS } from '@/constants/queries';
 import { postSearch } from '@/services/ifood';
 import { useUserStore } from '@/stores/user';
 import { getSearchResultsFromPayload } from '@/utils/ifood';
+import { useFirebase } from '@/composables/firebase';
 
 const query = ref('');
 const userStore = computed(() => useUserStore());
@@ -28,7 +29,10 @@ const handleOnInput = (event: Event) => {
 const handleOnSearch = () => {
   const { latitude, longitude } = userStore.value.location;
   postSearch({ alias: ALIAS_SEARCH_ITEMS, latitude, longitude, term: query.value, size: 20 }).then(
-    ({ data }) => console.log(getSearchResultsFromPayload(data))
+    ({ data }) => {
+      useFirebase().log('search_food', { latitude, longitude, term: query.value, success: true });
+      console.log(getSearchResultsFromPayload(data));
+    }
   );
 };
 </script>
