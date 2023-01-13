@@ -60,28 +60,8 @@ export const categories = {
       id: 'CO1',
     },
     {
-      description: 'Congelados Fit',
-      id: 'CF1',
-    },
-    {
-      description: 'Congelados',
-      id: 'CN1',
-    },
-    {
-      description: 'Contemporânea',
-      id: 'CNT',
-    },
-    {
-      description: 'Conveniência',
-      id: 'CV1',
-    },
-    {
       description: 'Coreana',
       id: 'CR1',
-    },
-    {
-      description: 'Cozinha rápida',
-      id: 'CRP',
     },
     {
       description: 'Crepe',
@@ -148,10 +128,6 @@ export const categories = {
       id: 'MED',
     },
     {
-      description: 'Mercado 🛒',
-      id: 'MER',
-    },
-    {
       description: 'Mexicana',
       id: 'MEX',
     },
@@ -162,10 +138,6 @@ export const categories = {
     {
       description: 'Nordestina',
       id: 'NO1',
-    },
-    {
-      description: 'Padaria',
-      id: 'PA1',
     },
     {
       description: 'Panqueca',
@@ -196,10 +168,6 @@ export const categories = {
       id: 'POR',
     },
     {
-      description: 'Presentes',
-      id: 'PRE',
-    },
-    {
       description: 'Salgados',
       id: 'SAG',
     },
@@ -222,14 +190,6 @@ export const categories = {
     {
       description: 'Tapioca',
       id: 'TA1',
-    },
-    {
-      description: 'Típica do Norte',
-      id: 'TN1',
-    },
-    {
-      description: 'Variada',
-      id: 'VAR',
     },
     {
       description: 'Vegana',
