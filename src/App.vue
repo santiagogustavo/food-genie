@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue';
 import SearchBar from '@/components/SearchBar.vue';
+import Card from '@/components/Cards/PlayingCard.vue';
+import CardsTable from '@/components/Cards/CardsTable.vue';
 import { useUserStore } from '@/stores/user';
 import { useFirebase } from '@/composables/firebase';
 
@@ -18,7 +19,11 @@ useFirebase().log('hello');
     </a>
   </div>
   <SearchBar />
-  <HelloWorld msg="Vite + Vue" />
+  <CardsTable>
+    <Card name="1" />
+    <Card name="2" />
+    <Card name="3" />
+  </CardsTable>
 </template>
 
 <style scoped>
