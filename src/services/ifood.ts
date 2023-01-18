@@ -6,7 +6,9 @@ const ifoodInstance = axios.create({
   baseURL: import.meta.env.VITE_IFOOD_API,
   timeout: 10000,
   headers: {
+    'Access-Control-Allow-Origin': '*',
     'Cache-Control': 'no-cache, no-store',
+    'Content-Type': 'application/json',
   },
 });
 

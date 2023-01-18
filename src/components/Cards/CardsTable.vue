@@ -1,8 +1,27 @@
 <template>
   <div class="cards-table">
-    <slot></slot>
+    <Card
+      v-for="(card, index) in cards"
+      :key="`card-${index}`"
+      :name="card.name"
+      :rotation="generateRotation()"
+    />
   </div>
 </template>
+
+<script setup lang="ts">
+import Card from '@/components/Cards/PlayingCard.vue';
+import { getRandomInt } from '@/utils/math';
+
+defineProps({
+  cards: {
+    type: Array<any>,
+    default: () => [],
+  },
+});
+
+const generateRotation = () => getRandomInt(-5, 5);
+</script>
 
 <style lang="scss">
 .cards-table {

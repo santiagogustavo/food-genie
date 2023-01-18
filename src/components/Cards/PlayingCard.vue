@@ -40,21 +40,21 @@ const COLORS = {
   red: '#ff1744',
 };
 
-const suit = Object.keys(SUITS).at(getRandomInt(0, 4)) ?? Object.keys(SUITS)[0];
-const color = Object.keys(COLORS).at(getRandomInt(0, 2)) ?? COLORS.red;
+const suit = Object.keys(SUITS).at(getRandomInt(0, 3)) ?? Object.keys(SUITS)[0];
+const color = Object.keys(COLORS).at(getRandomInt(0, 1)) ?? COLORS.red;
 const cardName = props.name.charAt(0);
 const rotation = `${props.rotation}deg`;
-const offset = `${Math.abs(props.rotation) * 2}px`;
+const offset = `${props.rotation * 2}px`;
 </script>
 
 <style lang="scss">
 @keyframes slide-card {
   0% {
-    transform: rotate(0deg) translateY(100px);
+    transform: translateY(100px) rotate(0deg);
     opacity: 0;
   }
   100% {
-    transform: rotate(v-bind('rotation')) translateY(v-bind('offset'));
+    transform: translateY(v-bind('offset')) rotate(v-bind('rotation'));
     opacity: 1;
   }
 }
@@ -68,8 +68,10 @@ const offset = `${Math.abs(props.rotation) * 2}px`;
   box-shadow: 0px 8px 16px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   color: v-bind('color');
-  animation: slide-card 500ms $cards-slide-easing forwards;
+  animation: slide-card 500ms 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
+  transform: translateY(100px) rotate(0deg);
+  opacity: 0;
   transform-origin: bottom center;
 
   width: $cards-width;
@@ -78,6 +80,10 @@ const offset = `${Math.abs(props.rotation) * 2}px`;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @include screen-s {
+    position: absolute;
+  }
 
   &__name,
   &__name--reverse {

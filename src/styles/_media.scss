@@ -1,0 +1,12 @@
+$screens-s-max: 767px;
+$screens-m-min: 768px;
+$screens-m-max: 1023px;
+$screens-l-min: 1024px;
+$screens-l-max: 1439px;
+$screens-xl-min: 1440px;
+
+@mixin screen-s {
+  @media (max-width: $screens-s-max) {
+    @content;
+  }
+}
