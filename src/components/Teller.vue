@@ -1,7 +1,7 @@
 <template>
   <div class="teller">
-    <button @click="handleAddCard">ADD</button>
-    <TellerReaction  class="teller__reaction" :reaction="currentReaction" />
+    <button @click="handleAddCard">VIRAR CARTA</button>
+    <TellerReaction class="teller__reaction" :reaction="currentReaction" />
     <CardsDeck class="teller__deck" :count="deckCount" />
     <CardsTable class="teller__table" :cards="cards" />
   </div>

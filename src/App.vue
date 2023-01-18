@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import SearchBar from '@/components/SearchBar.vue';
 import Teller from '@/components/Teller.vue';
 
 import { useUserStore } from '@/stores/user';
@@ -10,7 +9,6 @@ useFirebase().log('hello');
 </script>
 
 <template>
-  <SearchBar />
   <Teller />
 </template>
 
