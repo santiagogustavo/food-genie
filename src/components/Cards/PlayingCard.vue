@@ -68,10 +68,7 @@ const offset = `${props.rotation * 2}px`;
   box-shadow: 0px 8px 16px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   color: v-bind('color');
-  animation: slide-card 500ms 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-
-  transform: translateY(100px) rotate(0deg);
-  opacity: 0;
+  animation: slide-card 500ms 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
   transform-origin: bottom center;
 
   width: $cards-width;
