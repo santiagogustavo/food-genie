@@ -41,7 +41,7 @@ watch(
   min-height: 25px;
 
   &__text {
-    color: #ffee58;
+    color: $color-yellow;
     animation: chat 200ms ease;
   }
 }

@@ -4,4 +4,5 @@ export const reactions = [
   'Que tal?',
   'As cartas não mentem.',
   'Seja feita a sua vontade.',
+  'Na palma da sua mão.',
 ];

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Title from '@/components/Title.vue';
 import Teller from '@/components/Teller.vue';
 
 import { useUserStore } from '@/stores/user';
@@ -9,6 +10,7 @@ useFirebase().log('hello');
 </script>
 
 <template>
+  <Title>Food Genie</Title>
   <Teller />
 </template>
 

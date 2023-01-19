@@ -1,5 +1,5 @@
 <template>
-  <div class="playing-card">
+  <div :class="className">
     <div class="playing-card__name">
       <span>{{ cardName }}</span>
       <span>{{ SUITS[suit] }}</span>
@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import classNames from 'classnames';
+import { ref } from 'vue';
 import { getRandomInt } from '@/utils/math';
 
 const props = defineProps({
@@ -36,12 +38,17 @@ const SUITS: { [key: string]: string } = {
 };
 
 const COLORS = {
-  black: '#313131',
-  red: '#ff1744',
+  black: 'black',
+  red: 'red',
 };
 
-const suit = Object.keys(SUITS).at(getRandomInt(0, 3)) ?? Object.keys(SUITS)[0];
-const color = Object.keys(COLORS).at(getRandomInt(0, 1)) ?? COLORS.red;
+const suit = ref(Object.keys(SUITS).at(getRandomInt(0, 3)) ?? Object.keys(SUITS)[0]);
+const color = ref(Object.keys(COLORS).at(getRandomInt(0, 1)));
+const className = classNames('playing-card', {
+  'playing-card--red': color.value == COLORS.red,
+  'playing-card--black': color.value == COLORS.black,
+});
+
 const cardName = props.name.charAt(0);
 const rotation = `${props.rotation}deg`;
 const offset = `${props.rotation * 2}px`;
@@ -64,12 +71,19 @@ const offset = `${props.rotation * 2}px`;
   font-family: 'Card Characters';
   font-size: 24px;
   padding: 8px;
-  background: #fafafa;
+  background: $color-white;
   box-shadow: 0px 8px 16px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  color: v-bind('color');
   animation: slide-card 500ms 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  transform-origin: bottom center;
+  transform-origin: center;
+
+  &--black {
+    color: $color-card-black;
+  }
+
+  &--red {
+    color: $color-card-red;
+  }
 
   width: $cards-width;
   height: $cards-height;

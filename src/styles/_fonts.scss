@@ -6,3 +6,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Alice in Wonderland';
+  src: url('/fonts/AliceInWonderland/Alice_in_Wonderland.woff2') format('woff2'),
+    url('/fonts/AliceInWonderland/Alice_in_Wonderland.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
