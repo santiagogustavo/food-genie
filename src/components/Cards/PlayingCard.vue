@@ -42,8 +42,15 @@ const COLORS = {
   red: 'red',
 };
 
+const SUIT_COLORS: { [key: string]: string } = {
+  diamond: COLORS.red,
+  club: COLORS.black,
+  heart: COLORS.red,
+  spade: COLORS.black,
+};
+
 const suit = ref(Object.keys(SUITS).at(getRandomInt(0, 3)) ?? Object.keys(SUITS)[0]);
-const color = ref(Object.keys(COLORS).at(getRandomInt(0, 1)));
+const color = ref(SUIT_COLORS[suit.value]);
 const className = classNames('playing-card', {
   'playing-card--red': color.value == COLORS.red,
   'playing-card--black': color.value == COLORS.black,
