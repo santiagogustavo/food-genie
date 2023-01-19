@@ -41,7 +41,7 @@ const handleAnswer = (option: any) => {
   justify-content: center;
   padding: 0 32px;
 
-  background: $color-black;
+  background: $color-purple;
   color: $color-white;
 
   &__title {
