@@ -39,6 +39,7 @@ watch(
 
 .teller-reaction {
   min-height: 25px;
+  text-align: center;
 
   &__text {
     color: $color-yellow;

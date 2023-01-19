@@ -5,7 +5,9 @@
       :key="`card-${index}`"
       :name="card.name"
       :rotation="generateRotation()"
-    />
+    >
+      {{ card.label }}
+    </Card>
   </div>
 </template>
 
