@@ -6,11 +6,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { v4 } from 'uuid';
+import queryString from 'query-string';
 
-import { useUserStore } from '@/stores/user';
-import { useFirebase } from '@/composables/firebase';
 import Splash from '@/components/SplashScreen/Splash.vue';
 import Game from '@/components/GameScreen/Game.vue';
+import { useFirebase } from '@/composables/firebase';
+import { useUserStore } from '@/stores/user';
+import { getTimestamp } from '@/utils/time';
+import ApplicationStart from '@/services/analytics/events/ApplicationStart';
 
 const currentPage = ref(0);
 
@@ -19,10 +22,17 @@ const handleStartGame = () => {
 };
 
 onMounted(() => {
+  useUserStore().setStartTime(getTimestamp());
+
   const userId = v4();
   useUserStore().setUserId(userId);
   useFirebase().setUserId(userId);
-  useFirebase().log('hello');
+
+  const queryParams = queryString.parse(location.search);
+  const origin = queryParams?.origin ? String(queryParams?.origin) : 'local';
+
+  const applicationStartEvent = new ApplicationStart({ origin });
+  useFirebase().log(applicationStartEvent);
 });
 </script>
 

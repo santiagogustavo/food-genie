@@ -5,6 +5,7 @@ import {
   logEvent,
   AnalyticsCallOptions,
 } from '@firebase/analytics';
+import { AnalyticsEvent } from '@/types/analytics';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -21,8 +22,8 @@ const app = initializeApp(firebaseConfig);
 
 export const useFirebase = () => {
   const analytics = getAnalytics(app);
-  const log = (eventName: string, eventParams?: any, options?: AnalyticsCallOptions) =>
-    logEvent(analytics, eventName, eventParams, options);
+  const log = (event: AnalyticsEvent, options?: AnalyticsCallOptions) =>
+    logEvent(analytics, event.name, event.params, options);
 
   const setUserId = (userId: string, options?: AnalyticsCallOptions) =>
     fbSetUserId(analytics, userId, options);
