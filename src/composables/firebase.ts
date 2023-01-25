@@ -1,5 +1,10 @@
 import { initializeApp } from '@firebase/app';
-import { getAnalytics, logEvent, AnalyticsCallOptions } from '@firebase/analytics';
+import {
+  getAnalytics,
+  setUserId as fbSetUserId,
+  logEvent,
+  AnalyticsCallOptions,
+} from '@firebase/analytics';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -19,5 +24,8 @@ export const useFirebase = () => {
   const log = (eventName: string, eventParams?: any, options?: AnalyticsCallOptions) =>
     logEvent(analytics, eventName, eventParams, options);
 
-  return { log };
+  const setUserId = (userId: string, options?: AnalyticsCallOptions) =>
+    fbSetUserId(analytics, userId, options);
+
+  return { log, setUserId };
 };

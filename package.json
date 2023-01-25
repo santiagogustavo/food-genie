@@ -17,11 +17,13 @@
     "axios": "^1.2.2",
     "classnames": "^2.3.2",
     "pinia": "^2.0.28",
+    "uuid": "^9.0.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {
     "@types/dom-inputevent": "^1.0.7",
     "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "@vitejs/plugin-vue": "^4.0.0",
