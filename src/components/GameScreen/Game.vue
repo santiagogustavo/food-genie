@@ -8,10 +8,10 @@
 import { onMounted } from 'vue';
 import Teller from '@/components/Teller.vue';
 import { getDeltaTime } from '@/utils/time';
-import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/stores/app';
 
 onMounted(() => {
-  const startTime = useUserStore().startTime;
+  const startTime = useAppStore().latestTimestamp;
   console.log(getDeltaTime(startTime));
 });
 </script>

@@ -2,8 +2,7 @@
   <div class="splash">
     <Title>Food Genie</Title>
     <TellerReaction reaction="Você parece perdido, gostaria de jogar um jogo?" />
-    <hr />
-    <button @click="handleClickStart">Jogar</button>
+    <button class="splash__button" @click="handleClickStart">Jogar</button>
   </div>
 </template>
 
@@ -25,5 +24,9 @@ const handleClickStart = () => {
   align-items: center;
   justify-content: center;
   padding: 16px;
+
+  &__button {
+    margin-top: 16px;
+  }
 }
 </style>
