@@ -4,7 +4,7 @@ interface Common {
 }
 
 interface CommonDelta extends Common {
-  deltaTime?: number;
+  deltaTime: number;
 }
 
 interface CommonAb extends CommonDelta {

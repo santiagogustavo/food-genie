@@ -5,6 +5,7 @@ import {
   logEvent,
   AnalyticsCallOptions,
 } from '@firebase/analytics';
+import { fetchAndActivate, getRemoteConfig, getValue } from '@firebase/remote-config';
 import { AnalyticsEvent } from '@/types/analytics';
 
 const firebaseConfig = {
@@ -22,11 +23,17 @@ const app = initializeApp(firebaseConfig);
 
 export const useFirebase = () => {
   const analytics = getAnalytics(app);
+  const remoteConfig = getRemoteConfig(app);
+  remoteConfig.settings.minimumFetchIntervalMillis = 0;
+
   const log = (event: AnalyticsEvent, options?: AnalyticsCallOptions) =>
     logEvent(analytics, event.name, event.params, options);
 
   const setUserId = (userId: string, options?: AnalyticsCallOptions) =>
     fbSetUserId(analytics, userId, options);
 
-  return { log, setUserId };
+  const getBoolean = async (name: string) =>
+    await fetchAndActivate(remoteConfig).then(() => getValue(remoteConfig, name).asBoolean());
+
+  return { log, setUserId, getBoolean };
 };

@@ -3,8 +3,9 @@ import { LoadState } from '@/types/state';
 import { getCurrentLocation } from '@/utils/geolocation';
 
 type UserStore = {
-  id?: string;
+  id: string;
   startTime?: string;
+  abTest: boolean;
   location: {
     latitude?: number;
     longitude?: number;
@@ -16,8 +17,9 @@ type UserStore = {
 export const useUserStore = defineStore({
   id: 'user',
   state: (): UserStore => ({
-    id: undefined,
+    id: 'undefined',
     startTime: undefined,
+    abTest: false,
     location: {},
     loadState: LoadState.INIT,
     error: undefined,
@@ -28,6 +30,9 @@ export const useUserStore = defineStore({
     },
     setUserId(userId: string) {
       this.id = userId;
+    },
+    setAbTest(abTest: boolean) {
+      this.abTest = abTest;
     },
     setLocation(location: GeolocationCoordinates) {
       this.location = {

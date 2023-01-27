@@ -12,7 +12,7 @@ class ApplicationStart {
   params: Params;
 
   constructor({ origin }: Constructor) {
-    const userId = useUserStore().id ?? 'undefined';
+    const userId = useUserStore().id;
     const timestamp = getTimestamp();
 
     this.name = 'ApplicationStart';
