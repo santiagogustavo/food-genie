@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { LoadState } from '@/types/state';
 import { getCurrentLocation } from '@/utils/geolocation';
+import { Option } from '@/types/questions';
 
 type UserStore = {
   id: string;
@@ -9,6 +10,7 @@ type UserStore = {
     latitude?: number;
     longitude?: number;
   };
+  answers: Array<Option>;
   loadState: LoadState;
   error?: Error;
 };
@@ -19,6 +21,7 @@ export const useUserStore = defineStore({
     id: 'undefined',
     abTest: false,
     location: {},
+    answers: [],
     loadState: LoadState.INIT,
     error: undefined,
   }),
@@ -57,8 +60,15 @@ export const useUserStore = defineStore({
           return error;
         });
     },
+    pushLatestAnswer(answer: Option) {
+      this.answers = [...this.answers, answer];
+    },
+    resetAnswers() {
+      this.answers = [];
+    },
   },
   getters: {
     isLoading: state => state.loadState === LoadState.PENDING,
+    latestAnswer: state => state.answers[state.answers.length - 1],
   },
 });

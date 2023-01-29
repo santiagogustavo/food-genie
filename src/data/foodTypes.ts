@@ -1,4 +1,4 @@
-export const meals = [
+export const MEAL = [
   'AF1',
   'ALE',
   'ARA',
@@ -45,4 +45,4 @@ export const meals = [
   'YA1',
 ];
 
-export const desserts = ['AC1', 'BEB', 'CA1', 'CS1', 'CP1', 'DCE', 'PIZ', 'SOR', 'TA1'];
+export const DESSERT = ['AC1', 'BEB', 'CA1', 'CS1', 'CP1', 'DCE', 'PIZ', 'SOR', 'TA1'];

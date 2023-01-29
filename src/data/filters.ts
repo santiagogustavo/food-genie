@@ -1,211 +1,206 @@
-export const categories = {
-  id: 'AVAILABLE_CATEGORIES',
-  description: 'Categorias',
-  displayType: 'WORD_CLOUD',
-  values: [
-    {
-      description: 'Africana',
-      id: 'AF1',
-    },
-    {
-      description: 'Alemã',
-      id: 'ALE',
-    },
-    {
-      description: 'Árabe',
-      id: 'ARA',
-    },
-    {
-      description: 'Argentina',
-      id: 'AR1',
-    },
-    {
-      description: 'Asiática',
-      id: 'ASI',
-    },
-    {
-      description: 'Açaí',
-      id: 'AC1',
-    },
-    {
-      description: 'Baiana',
-      id: 'BA1',
-    },
-    {
-      description: 'Bebidas',
-      id: 'BEB',
-    },
-    {
-      description: 'Brasileira',
-      id: 'BRA',
-    },
-    {
-      description: 'Cafeteria',
-      id: 'CA1',
-    },
-    {
-      description: 'Carnes',
-      id: 'CAR',
-    },
-    {
-      description: 'Casa de Sucos',
-      id: 'CS1',
-    },
-    {
-      description: 'Chinesa',
-      id: 'CHI',
-    },
-    {
-      description: 'Colombiana',
-      id: 'CO1',
-    },
-    {
-      description: 'Coreana',
-      id: 'CR1',
-    },
-    {
-      description: 'Crepe',
-      id: 'CP1',
-    },
-    {
-      description: 'Doces & Bolos',
-      id: 'DCE',
-    },
-    {
-      description: 'Espanhola',
-      id: 'ES1',
-    },
-    {
-      description: 'Francesa',
-      id: 'FRA',
-    },
-    {
-      description: 'Frangos',
-      id: 'FR1',
-    },
-    {
-      description: 'Frutos do mar',
-      id: 'FRU',
-    },
-    {
-      description: 'Gaúcha',
-      id: 'GA1',
-    },
-    {
-      description: 'Grega',
-      id: 'GRC',
-    },
-    {
-      description: 'Hambúrguer',
-      id: 'BUR',
-    },
-    {
-      description: 'Indiana',
-      id: 'IND',
-    },
-    {
-      description: 'Italiana',
-      id: 'ITA',
-    },
-    {
-      description: 'Japonesa',
-      id: 'JAP',
-    },
-    {
-      description: 'Lanches',
-      id: 'LCH',
-    },
-    {
-      description: 'Marmita',
-      id: 'MA1',
-    },
-    {
-      description: 'Marroquina',
-      id: 'MAR',
-    },
-    {
-      description: 'Mediterrânea',
-      id: 'MED',
-    },
-    {
-      description: 'Mexicana',
-      id: 'MEX',
-    },
-    {
-      description: 'Mineira',
-      id: 'MI1',
-    },
-    {
-      description: 'Nordestina',
-      id: 'NO1',
-    },
-    {
-      description: 'Panqueca',
-      id: 'PQC',
-    },
-    {
-      description: 'Paranaense',
-      id: 'PR1',
-    },
-    {
-      description: 'Pastel',
-      id: 'PAS',
-    },
-    {
-      description: 'Peixes',
-      id: 'PX1',
-    },
-    {
-      description: 'Peruana',
-      id: 'PER',
-    },
-    {
-      description: 'Pizza',
-      id: 'PIZ',
-    },
-    {
-      description: 'Portuguesa',
-      id: 'POR',
-    },
-    {
-      description: 'Salgados',
-      id: 'SAG',
-    },
-    {
-      description: 'Saudável',
-      id: 'SAU',
-    },
-    {
-      description: 'Sopas & Caldos',
-      id: 'SP1',
-    },
-    {
-      description: 'Sorvetes',
-      id: 'SOR',
-    },
-    {
-      description: 'Tailandesa',
-      id: 'THA',
-    },
-    {
-      description: 'Tapioca',
-      id: 'TA1',
-    },
-    {
-      description: 'Vegana',
-      id: 'VE1',
-    },
-    {
-      description: 'Vegetariana',
-      id: 'VEG',
-    },
-    {
-      description: 'Xis',
-      id: 'XI1',
-    },
-    {
-      description: 'Yakisoba',
-      id: 'YA1',
-    },
-  ],
-};
+export const categories = [
+  {
+    label: 'Africana',
+    id: 'AF1',
+  },
+  {
+    label: 'Alemã',
+    id: 'ALE',
+  },
+  {
+    label: 'Árabe',
+    id: 'ARA',
+  },
+  {
+    label: 'Argentina',
+    id: 'AR1',
+  },
+  {
+    label: 'Asiática',
+    id: 'ASI',
+  },
+  {
+    label: 'Açaí',
+    id: 'AC1',
+  },
+  {
+    label: 'Baiana',
+    id: 'BA1',
+  },
+  {
+    label: 'Bebidas',
+    id: 'BEB',
+  },
+  {
+    label: 'Brasileira',
+    id: 'BRA',
+  },
+  {
+    label: 'Cafeteria',
+    id: 'CA1',
+  },
+  {
+    label: 'Carnes',
+    id: 'CAR',
+  },
+  {
+    label: 'Casa de Sucos',
+    id: 'CS1',
+  },
+  {
+    label: 'Chinesa',
+    id: 'CHI',
+  },
+  {
+    label: 'Colombiana',
+    id: 'CO1',
+  },
+  {
+    label: 'Coreana',
+    id: 'CR1',
+  },
+  {
+    label: 'Crepe',
+    id: 'CP1',
+  },
+  {
+    label: 'Doces & Bolos',
+    id: 'DCE',
+  },
+  {
+    label: 'Espanhola',
+    id: 'ES1',
+  },
+  {
+    label: 'Francesa',
+    id: 'FRA',
+  },
+  {
+    label: 'Frangos',
+    id: 'FR1',
+  },
+  {
+    label: 'Frutos do mar',
+    id: 'FRU',
+  },
+  {
+    label: 'Gaúcha',
+    id: 'GA1',
+  },
+  {
+    label: 'Grega',
+    id: 'GRC',
+  },
+  {
+    label: 'Hambúrguer',
+    id: 'BUR',
+  },
+  {
+    label: 'Indiana',
+    id: 'IND',
+  },
+  {
+    label: 'Italiana',
+    id: 'ITA',
+  },
+  {
+    label: 'Japonesa',
+    id: 'JAP',
+  },
+  {
+    label: 'Lanches',
+    id: 'LCH',
+  },
+  {
+    label: 'Marmita',
+    id: 'MA1',
+  },
+  {
+    label: 'Marroquina',
+    id: 'MAR',
+  },
+  {
+    label: 'Mediterrânea',
+    id: 'MED',
+  },
+  {
+    label: 'Mexicana',
+    id: 'MEX',
+  },
+  {
+    label: 'Mineira',
+    id: 'MI1',
+  },
+  {
+    label: 'Nordestina',
+    id: 'NO1',
+  },
+  {
+    label: 'Panqueca',
+    id: 'PQC',
+  },
+  {
+    label: 'Paranaense',
+    id: 'PR1',
+  },
+  {
+    label: 'Pastel',
+    id: 'PAS',
+  },
+  {
+    label: 'Peixes',
+    id: 'PX1',
+  },
+  {
+    label: 'Peruana',
+    id: 'PER',
+  },
+  {
+    label: 'Pizza',
+    id: 'PIZ',
+  },
+  {
+    label: 'Portuguesa',
+    id: 'POR',
+  },
+  {
+    label: 'Salgados',
+    id: 'SAG',
+  },
+  {
+    label: 'Saudável',
+    id: 'SAU',
+  },
+  {
+    label: 'Sopas & Caldos',
+    id: 'SP1',
+  },
+  {
+    label: 'Sorvetes',
+    id: 'SOR',
+  },
+  {
+    label: 'Tailandesa',
+    id: 'THA',
+  },
+  {
+    label: 'Tapioca',
+    id: 'TA1',
+  },
+  {
+    label: 'Vegana',
+    id: 'VE1',
+  },
+  {
+    label: 'Vegetariana',
+    id: 'VEG',
+  },
+  {
+    label: 'Xis',
+    id: 'XI1',
+  },
+  {
+    label: 'Yakisoba',
+    id: 'YA1',
+  },
+];

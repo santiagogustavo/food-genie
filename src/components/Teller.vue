@@ -1,6 +1,6 @@
 <template>
   <div class="teller">
-    <button v-if="!deckCount" @click="handleResetGame">Jogar de novo</button>
+    <button v-if="!deckCount" @click="handleClickRetry">Jogar de novo</button>
     <TellerReaction class="teller__reaction" :reaction="currentReaction" />
     <CardsDeck class="teller__deck" :count="deckCount" />
     <CardsTable class="teller__table" :cards="cards" />
@@ -13,29 +13,70 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import TellerReaction from '@/components/TellerReaction.vue';
 import CardsDeck from '@/components/Cards/CardsDeck.vue';
 import CardsTable from '@/components/Cards/CardsTable.vue';
 import QuestionModal from '@/components/QuestionModal/QuestionModal.vue';
+import { useFirebase } from '@/composables/firebase';
 
 import { reactions } from '@/data/quotes';
 import { getRandomInt } from '@/utils/math';
+import UserAnswer from '@/services/analytics/events/UserAnswer';
+import { useAppStore } from '@/stores/app';
+import { useUserStore } from '@/stores/user';
+import { Question, Option } from '@/types/questions';
+import { getDeltaTime } from '@/utils/time';
+import { getCurrentQuestion } from '@/utils/questions';
+
+const props = defineProps({
+  cardDeckCount: {
+    type: Number,
+    required: true,
+  },
+});
+
+const appStore = computed(() => useAppStore());
+const userStore = computed(() => useUserStore());
 
 const isModalOpen = ref(false);
-const questionAlternatives = ref([
-  { name: 'refeição', label: 'A' },
-  { name: 'sobremesa', label: 'B' },
-]);
-
 const deckCount = ref(0);
 const tableCount = ref(0);
+
+const currentQuestion = computed(() => {
+  switch (tableCount.value) {
+    case 0:
+      return Question.TYPE;
+    case 1:
+      return Question.CATEGORY;
+    case 2:
+      return props.cardDeckCount === 3 ? Question.FILLING_OR_TOPPING : Question.BRAND;
+    case 4:
+      return Question.FILLING_OR_TOPPING;
+    default:
+      return Question.TYPE;
+  }
+});
+const questionAlternatives = computed(() =>
+  getCurrentQuestion(currentQuestion.value, userStore.value.latestAnswer?.name)
+);
+
 const currentReaction = ref('');
 const latestReactions = ref(new Array<number>());
 
 const cards = ref(new Array<any>());
 
-const handleAddCard = (option: any) => {
+const logAnswerEvent = (optionChosen: string) => {
+  const latestTimestamp = appStore.value.latestTimestamp;
+  const deltaTime = getDeltaTime(latestTimestamp);
+  const cardNumber = cards.value.length + 1;
+  const optionA = questionAlternatives.value[0].label || '';
+  const optionB = questionAlternatives.value[1].label || '';
+  const userAnswerEvent = new UserAnswer({ deltaTime, cardNumber, optionA, optionB, optionChosen });
+  useFirebase().log(userAnswerEvent);
+};
+
+const handleAddCard = (option: Option) => {
   if (deckCount.value === 0) {
     return;
   }
@@ -49,17 +90,25 @@ const handleAskQuestion = () => {
   isModalOpen.value = true;
 };
 
-const handleAnswerQuestion = (option: any) => {
+const handleAnswerQuestion = (option: Option) => {
   isModalOpen.value = false;
+  logAnswerEvent(option.label);
   handleAddCard(option);
+  appStore.value.pushCurrentTimestamp();
+  userStore.value.pushLatestAnswer(option);
 };
 
 const handleResetGame = () => {
-  deckCount.value = 4;
+  deckCount.value = props.cardDeckCount;
   tableCount.value = 0;
   cards.value = [];
   latestReactions.value = [];
   currentReaction.value = '';
+};
+
+const handleClickRetry = () => {
+  handleResetGame();
+  userStore.value.resetAnswers();
 };
 
 watch(

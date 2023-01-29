@@ -52,9 +52,15 @@ const handleAnswer = (option: any) => {
   &__alternatives {
     display: flex;
     justify-content: center;
+
+    @include screen-s {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &__button {
+    width: 100%;
     padding: 32px;
     margin: 16px;
     font-family: 'Alice in Wonderland';
