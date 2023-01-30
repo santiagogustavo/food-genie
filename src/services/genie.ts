@@ -13,7 +13,8 @@ type SearchQuery = {
   latitude?: number;
   longitude?: number;
   term?: string;
-  categories?: Array<string>;
+  categories?: string;
+  sort?: string;
 };
 
 export const postSearch = (query: SearchQuery) =>

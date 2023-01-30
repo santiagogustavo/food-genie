@@ -1,7 +1,7 @@
 <template>
   <Transition name="fade">
     <div v-if="loading" class="loading-screen">
-      <Spinner />
+      <Spinner class="loading-screen__spinner" />
     </div>
   </Transition>
 </template>
@@ -38,5 +38,10 @@ defineProps({
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+
+  &__spinner {
+    z-index: 999;
+  }
 }
 </style>

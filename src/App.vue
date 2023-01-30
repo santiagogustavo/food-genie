@@ -52,6 +52,7 @@ const logApplicationStartEvent = () => {
 };
 
 onMounted(async () => {
+  userStore.value.fetchCurrentLocation();
   appStore.value.pushCurrentTimestamp();
   generateUserId();
   await fetchAbTest();

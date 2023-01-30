@@ -4,3 +4,11 @@ export const getSearchResultsFromPayload = (payload: any) => {
   }
   return payload.sections[0].cards[0].data.contents;
 };
+
+export const getBrandsFromResults = (results: any) => results.map((result: any) => result.name);
+
+export const getBrandIdFromName = (results: any, name: string) =>
+  results.find((result: any) => result.name === name)?.id;
+
+export const getMerchantFromId = (results: any, id: string) =>
+  results.find((result: any) => result.id === id);

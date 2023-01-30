@@ -7,7 +7,7 @@
   </div>
   <QuestionModal
     :alternatives="questionAlternatives"
-    :open="isModalOpen"
+    :open="canOpenModal"
     @answer="handleAnswerQuestion"
   />
 </template>
@@ -42,6 +42,7 @@ const userStore = computed(() => useUserStore());
 const isModalOpen = ref(false);
 const deckCount = ref(0);
 const tableCount = ref(0);
+const canOpenModal = computed(() => isModalOpen.value && !appStore.value.isLoading);
 
 const currentQuestion = computed(() => {
   switch (tableCount.value) {
@@ -51,15 +52,13 @@ const currentQuestion = computed(() => {
       return Question.CATEGORY;
     case 2:
       return props.cardDeckCount === 3 ? Question.FILLING_OR_TOPPING : Question.BRAND;
-    case 4:
+    case 3:
       return Question.FILLING_OR_TOPPING;
     default:
       return Question.TYPE;
   }
 });
-const questionAlternatives = computed(() =>
-  getCurrentQuestion(currentQuestion.value, userStore.value.latestAnswer?.name)
-);
+const questionAlternatives = ref();
 
 const currentReaction = ref('');
 const latestReactions = ref(new Array<number>());
@@ -70,8 +69,8 @@ const logAnswerEvent = (optionChosen: string) => {
   const latestTimestamp = appStore.value.latestTimestamp;
   const deltaTime = getDeltaTime(latestTimestamp);
   const cardNumber = cards.value.length + 1;
-  const optionA = questionAlternatives.value[0].label || '';
-  const optionB = questionAlternatives.value[1].label || '';
+  const optionA = questionAlternatives?.value[0]?.label || '';
+  const optionB = questionAlternatives?.value[1]?.label || '';
   const userAnswerEvent = new UserAnswer({ deltaTime, cardNumber, optionA, optionB, optionChosen });
   useFirebase().log(userAnswerEvent);
 };
@@ -138,8 +137,19 @@ watch(
   }
 );
 
-onMounted(() => {
+watch(
+  () => currentQuestion.value,
+  async next => {
+    questionAlternatives.value = await getCurrentQuestion(next, userStore.value.latestAnswer?.name);
+  }
+);
+
+onMounted(async () => {
   handleResetGame();
+  questionAlternatives.value = await getCurrentQuestion(
+    currentQuestion.value,
+    userStore.value.latestAnswer?.name
+  );
 });
 </script>
 
