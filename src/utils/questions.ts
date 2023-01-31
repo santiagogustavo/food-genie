@@ -1,17 +1,17 @@
 import { TYPE } from '@/constants/questions';
-import { MEAL, DESSERT } from '@/data/foodTypes';
-import { categories } from '@/data/filters';
 import { Question } from '@/types/questions';
 import { useIfoodStore } from '@/stores/ifood';
-import { getRandomInt } from '@/utils/math';
-import { getBrandIdFromName, getBrandsFromResults, getMerchantFromId } from '@/utils/ifood';
+import { getRandomFromArray, getRandomFromArrayDedup } from '@/utils/math';
+import {
+  filterCategoriesFromResults,
+  getCategoryIdFromAction,
+  getMerchantIdFromAction,
+} from '@/utils/ifood';
 
 const defaultQuestion = [
   { name: 'a', label: 'A' },
   { name: 'b', label: 'B' },
 ];
-
-const getCategoryData = (id: string) => categories.find(category => category.id === id);
 
 export const getTypeQuestion = () =>
   Promise.resolve([
@@ -19,64 +19,40 @@ export const getTypeQuestion = () =>
     { name: TYPE.DESSERT, label: 'Sobremesa' },
   ]);
 
-export const getCategoryQuestion = (type: string) => {
-  const data = type === TYPE.MEAL ? MEAL : DESSERT;
-  const categoryAId = data[getRandomInt(0, data.length - 1)];
-  let categoryBId;
-  do {
-    categoryBId = data[getRandomInt(0, data.length - 1)];
-  } while (categoryBId === categoryAId);
+export const getCategoryQuestion = async (type: string) => {
+  const categories = await useIfoodStore().fetchCategories();
+  const data = filterCategoriesFromResults(categories, type);
 
-  const categoryA = getCategoryData(categoryAId);
-  const categoryB = getCategoryData(categoryBId);
+  const categoryA = getRandomFromArray(data);
+  const categoryB = getRandomFromArrayDedup(data, categoryA, 'id');
+
   return Promise.resolve([
-    { name: categoryA?.id, label: categoryA?.label },
-    { name: categoryB?.id, label: categoryB?.label },
+    { name: getCategoryIdFromAction(categoryA.action), label: categoryA?.title },
+    { name: getCategoryIdFromAction(categoryB.action), label: categoryB?.title },
   ]);
 };
 
-export const getBrandQuestion = async () => {
-  const results = await useIfoodStore().fetchResults();
-  const brands = getBrandsFromResults(results);
-  const brandAName = brands[getRandomInt(0, brands.length - 1)];
-  let brandBName;
-  do {
-    brandBName = brands[getRandomInt(0, brands.length - 1)];
-  } while (brandBName === brandAName);
-  const brandAId = getBrandIdFromName(results, brandAName);
-  const brandBId = getBrandIdFromName(results, brandBName);
+export const getBrandQuestion = async (categoryId: string) => {
+  const brands = await useIfoodStore().fetchCategory(categoryId);
+
+  const brandA = getRandomFromArray(brands);
+  const brandB = getRandomFromArrayDedup(brands, brandA, 'id');
 
   return Promise.resolve([
-    { name: brandAId, label: brandAName },
-    { name: brandBId, label: brandBName },
+    { name: getMerchantIdFromAction(brandA.action), label: brandA.name },
+    { name: getMerchantIdFromAction(brandB.action), label: brandB.name },
   ]);
 };
 
 export const getFillingOrToppingQuestion = async (merchantId: string) => {
-  let results = useIfoodStore().results;
-  if (!results) {
-    results = await useIfoodStore().fetchResults();
-  }
+  const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
 
-  const merchantA = merchantId
-    ? getMerchantFromId(results, merchantId)
-    : results[getRandomInt(0, results.length - 1)];
-  let merchantB = merchantId ? merchantA : undefined;
-  if (!merchantId) {
-    do {
-      merchantB = results[getRandomInt(0, results.length - 1)];
-    } while (merchantB.name === merchantA.name);
-  }
-
-  const itemA = merchantA.items[getRandomInt(0, merchantA.items.length - 1)];
-  let itemB;
-  do {
-    itemB = merchantB.items[getRandomInt(0, merchantB.items.length - 1)];
-  } while (itemB.name === itemA.name);
+  const itemA = getRandomFromArray(catalog);
+  const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');
 
   return Promise.resolve([
-    { name: itemA?.id, label: itemA?.name },
-    { name: itemB?.id, label: itemB?.name },
+    { name: itemA?.id, label: itemA?.description },
+    { name: itemB?.id, label: itemB?.description },
   ]);
 };
 
@@ -87,7 +63,7 @@ export const getCurrentQuestion = (question: Question, param: string) => {
     case Question.CATEGORY:
       return getCategoryQuestion(param);
     case Question.BRAND:
-      return getBrandQuestion();
+      return getBrandQuestion(param);
     case Question.FILLING_OR_TOPPING:
       return getFillingOrToppingQuestion(param);
     default:

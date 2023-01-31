@@ -1,6 +1,5 @@
 <template>
   <div class="teller">
-    <button v-if="!deckCount" @click="handleClickRetry">Jogar de novo</button>
     <TellerReaction class="teller__reaction" :reaction="currentReaction" />
     <CardsDeck class="teller__deck" :count="deckCount" />
     <CardsTable class="teller__table" :cards="cards" />
@@ -30,6 +29,10 @@ import { getDeltaTime } from '@/utils/time';
 import { getCurrentQuestion } from '@/utils/questions';
 
 const props = defineProps({
+  hasAnsweredAllQuestions: {
+    type: Boolean,
+    default: false,
+  },
   cardDeckCount: {
     type: Number,
     required: true,
@@ -105,10 +108,15 @@ const handleResetGame = () => {
   currentReaction.value = '';
 };
 
-const handleClickRetry = () => {
-  handleResetGame();
-  userStore.value.resetAnswers();
-};
+watch(
+  () => props.hasAnsweredAllQuestions,
+  next => {
+    if (next) {
+      return;
+    }
+    handleResetGame();
+  }
+);
 
 watch(
   () => tableCount.value,
@@ -128,7 +136,7 @@ watch(
 watch(
   () => deckCount.value,
   next => {
-    if (!next) {
+    if (!next || props.hasAnsweredAllQuestions) {
       return;
     }
     setTimeout(() => {
@@ -141,10 +149,17 @@ watch(
   () => currentQuestion.value,
   async next => {
     questionAlternatives.value = await getCurrentQuestion(next, userStore.value.latestAnswer?.name);
+    if (questionAlternatives?.value[0]?.name === questionAlternatives?.value[1]?.name) {
+      handleAnswerQuestion(questionAlternatives.value[0]);
+    }
   }
 );
 
 onMounted(async () => {
+  if (props.hasAnsweredAllQuestions) {
+    return;
+  }
+
   handleResetGame();
   questionAlternatives.value = await getCurrentQuestion(
     currentQuestion.value,
