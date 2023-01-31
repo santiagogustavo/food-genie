@@ -1,13 +1,10 @@
 <template>
   <div class="game">
-    <div v-if="hasAnsweredAllQuestions" class="game__actions">
+    <div v-if="hasResults" class="game__actions">
       <button @click="handleClickOpenIfood">Abrir resultado</button>
       <button @click="handleClickRetry">Jogar de novo</button>
     </div>
-    <Teller
-      :has-answered-all-questions="hasAnsweredAllQuestions"
-      :card-deck-count="cardDeckCount"
-    />
+    <Teller :has-answered-all-questions="hasResults" :card-deck-count="cardDeckCount" />
   </div>
 </template>
 
@@ -28,10 +25,10 @@ const userStore = computed(() => useUserStore());
 const abTest = computed(() => userStore.value.abTest);
 const cardDeckCount = computed(() => (abTest.value ? 4 : 3));
 
-const answers = computed(() => userStore.value.answers);
-const hasAnsweredAllQuestions = computed(() => answers.value.length === cardDeckCount.value);
-const merchantId = computed(() => hasAnsweredAllQuestions.value && answers.value[2].name);
-const itemId = computed(() => answers.value[answers.value.length - 1].name);
+const hasResults = computed(() => userStore.value.hasResults);
+
+const merchantId = computed(() => userStore.value.results.merchant?.name);
+const itemId = computed(() => userStore.value.results.item?.name);
 
 const logGameStartEvent = () => {
   const deltaTime = getDeltaTime(appStore.value.latestTimestamp);
@@ -52,6 +49,7 @@ const handleClickOpenIfood = () => {
 
 const handleClickRetry = () => {
   userStore.value.resetAnswers();
+  userStore.value.resetResults();
 };
 
 onMounted(() => {

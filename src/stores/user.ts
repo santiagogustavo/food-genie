@@ -11,9 +11,15 @@ type UserStore = {
     longitude?: number;
   };
   answers: Array<Option>;
+  results: {
+    merchant?: Option;
+    item?: Option;
+  };
   loadState: LoadState;
   error?: Error;
 };
+
+const hasResults = (state: any) => !!state.results.merchant && !!state.results.item;
 
 export const useUserStore = defineStore({
   id: 'user',
@@ -22,6 +28,10 @@ export const useUserStore = defineStore({
     abTest: false,
     location: {},
     answers: [],
+    results: {
+      merchant: undefined,
+      item: undefined,
+    },
     loadState: LoadState.INIT,
     error: undefined,
   }),
@@ -43,6 +53,12 @@ export const useUserStore = defineStore({
     },
     setError(error: Error) {
       this.error = error;
+    },
+    setResultsMerchant(merchant: Option) {
+      this.results.merchant = merchant;
+    },
+    setResultsItem(item: Option) {
+      this.results.item = item;
     },
     fetchCurrentLocation() {
       const userStore = useUserStore();
@@ -66,9 +82,18 @@ export const useUserStore = defineStore({
     resetAnswers() {
       this.answers = [];
     },
+    resetResults() {
+      this.results = {
+        merchant: undefined,
+        item: undefined,
+      };
+    },
   },
   getters: {
     isLoading: state => state.loadState === LoadState.PENDING,
     latestAnswer: state => state.answers[state.answers.length - 1],
+    hasResults: state => hasResults(state),
+    stringifiedResult: state =>
+      hasResults(state) ? `${state.results.merchant?.label} - ${state.results.item?.label}` : '',
   },
 });

@@ -92,9 +92,18 @@ const handleAskQuestion = () => {
   isModalOpen.value = true;
 };
 
+const setCurrentResults = (option: Option) => {
+  if (currentQuestion.value === Question.BRAND) {
+    userStore.value.setResultsMerchant(option);
+  } else if (currentQuestion.value === Question.FILLING_OR_TOPPING) {
+    userStore.value.setResultsItem(option);
+  }
+};
+
 const handleAnswerQuestion = (option: Option) => {
   isModalOpen.value = false;
   logAnswerEvent(option.label);
+  setCurrentResults(option);
   handleAddCard(option);
   appStore.value.pushCurrentTimestamp();
   userStore.value.pushLatestAnswer(option);

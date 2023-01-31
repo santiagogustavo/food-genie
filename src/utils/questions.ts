@@ -7,6 +7,7 @@ import {
   getCategoryIdFromAction,
   getMerchantIdFromAction,
 } from '@/utils/ifood';
+import { useUserStore } from '@/stores/user';
 
 const defaultQuestion = [
   { name: 'a', label: 'A' },
@@ -44,7 +45,24 @@ export const getBrandQuestion = async (categoryId: string) => {
   ]);
 };
 
-export const getFillingOrToppingQuestion = async (merchantId: string) => {
+const fetchAndGetRandomMerchant = async (categoryId: string) => {
+  const merchants = await useIfoodStore().fetchCategory(categoryId);
+  const randomMerchant = getRandomFromArray(merchants);
+  const merchantId = String(getMerchantIdFromAction(randomMerchant.action));
+  useUserStore().setResultsMerchant({ name: merchantId, label: randomMerchant.name });
+  return merchantId;
+};
+
+export const getFillingOrToppingQuestion = async (merchantOrCategoryId: string) => {
+  const merchants = await useIfoodStore().merchants;
+  let merchantId;
+
+  if (!merchants?.length) {
+    merchantId = await fetchAndGetRandomMerchant(merchantOrCategoryId);
+  } else {
+    merchantId = merchantOrCategoryId;
+  }
+
   const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
 
   const itemA = getRandomFromArray(catalog);
