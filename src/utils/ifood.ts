@@ -40,6 +40,11 @@ export const filterCategoriesFromResults = (results: any, type: string) => {
   return results.filter((result: any) => categories.includes(result.title));
 };
 
+export const isDessertAlsoMeal = (dessertLabel: string) => {
+  const categories = MEAL.map(category => getCategoryData(category)?.label);
+  return !!categories.find(meal => meal === dessertLabel);
+};
+
 export const getBrandsFromResults = (results: any) => results.map((result: any) => result.name);
 
 export const getBrandIdFromName = (results: any, name: string) =>

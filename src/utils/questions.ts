@@ -6,6 +6,7 @@ import {
   filterCategoriesFromResults,
   getCategoryIdFromAction,
   getMerchantIdFromAction,
+  isDessertAlsoMeal,
 } from '@/utils/ifood';
 import { useUserStore } from '@/stores/user';
 
@@ -27,9 +28,14 @@ export const getCategoryQuestion = async (type: string) => {
   const categoryA = getRandomFromArray(data);
   const categoryB = getRandomFromArrayDedup(data, categoryA, 'id');
 
+  const isAAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryA.title);
+  const isBAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryB.title);
+  const labelA = `${categoryA.title}${isAAlsoMeal ? ' Doce' : ''}`;
+  const labelB = `${categoryB.title}${isBAlsoMeal ? ' Doce' : ''}`;
+
   return Promise.resolve([
-    { name: getCategoryIdFromAction(categoryA.action), label: categoryA?.title },
-    { name: getCategoryIdFromAction(categoryB.action), label: categoryB?.title },
+    { name: getCategoryIdFromAction(categoryA.action), label: labelA },
+    { name: getCategoryIdFromAction(categoryB.action), label: labelB },
   ]);
 };
 
