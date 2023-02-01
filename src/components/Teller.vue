@@ -37,6 +37,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  tellerTimeout: {
+    type: Number,
+    required: true,
+  },
 });
 
 const appStore = computed(() => useAppStore());
@@ -150,7 +154,7 @@ watch(
     }
     setTimeout(() => {
       handleAskQuestion();
-    }, 1000);
+    }, props.tellerTimeout);
   }
 );
 

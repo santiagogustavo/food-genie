@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { LoadState } from '@/types/state';
 import { getTimestamp } from '@/utils/time';
+import { useUserStore } from '@/stores/user';
 
 type AppStore = {
   loadState: LoadState;
@@ -24,5 +25,9 @@ export const useAppStore = defineStore({
   getters: {
     isLoading: state => state.loadState === LoadState.PENDING,
     latestTimestamp: state => state.timestamps[state.timestamps.length - 1],
+    gameStartTimestamp: state => {
+      const answerCount = useUserStore().answers.length;
+      return state.timestamps[state.timestamps.length - answerCount - 1];
+    },
   },
 });

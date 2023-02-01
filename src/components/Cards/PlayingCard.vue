@@ -121,5 +121,13 @@ const offset = `${props.rotation * 2}px`;
     bottom: 8px;
     transform: rotate(180deg);
   }
+
+  &__content {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 3rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 </style>
