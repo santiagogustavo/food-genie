@@ -6,7 +6,7 @@ import { UserIdentified as Params } from '@/interfaces/analytics';
 type Constructor = {
   deltaTime: Params['deltaTime'];
   userName: Params['userName'];
-  language: Params['language'];
+  language?: Params['language'];
   latitude: Params['latitude'];
   longitude: Params['longitude'];
 };

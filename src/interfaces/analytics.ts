@@ -40,7 +40,7 @@ export interface GameRetry extends CommonAb {
 
 export interface UserIdentified extends CommonAb {
   userName: string;
-  language: string;
+  language?: string;
   latitude: number;
   longitude: number;
 }

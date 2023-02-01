@@ -63,9 +63,9 @@ const handleAnswer = (option: any) => {
     width: 100%;
     padding: 32px;
     margin: 16px;
-    font-family: 'Alice in Wonderland';
+    font-family: 'Card Characters';
     color: $color-yellow;
-    font-size: 48px;
+    font-size: 32px;
   }
 }
 </style>

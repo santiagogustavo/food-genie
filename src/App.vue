@@ -1,7 +1,8 @@
 <template>
   <LoadingScreen :loading="isLoading" />
-  <Splash v-if="currentPage === 0" @start="handleStartGame" />
-  <Game v-if="currentPage === 1" />
+  <Splash v-if="currentPage === 0" @start="handleAskUser" />
+  <User v-if="currentPage === 1" @start="handleStartGame" />
+  <Game v-if="currentPage === 2" />
 </template>
 
 <script setup lang="ts">
@@ -10,14 +11,16 @@ import { v4 } from 'uuid';
 import queryString from 'query-string';
 
 import Splash from '@/components/SplashScreen/Splash.vue';
+import User from '@/components/UserScreen/User.vue';
 import Game from '@/components/GameScreen/Game.vue';
 import LoadingScreen from '@/components/LoadingScreen/Loading.vue';
 import { useFirebase } from '@/composables/firebase';
-import { REMOTE_CONFIGS } from '@/constants/remoteConfigs';
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import ApplicationStart from '@/services/analytics/events/ApplicationStart';
-import { LoadState } from '@/types/state';
+import { getRandomArbitrary } from '@/utils/math';
+import UserIdentified from './services/analytics/events/UserIdentified';
+import { getDeltaTime } from './utils/time';
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());
@@ -26,21 +29,30 @@ const firebase = computed(() => useFirebase());
 const currentPage = ref(0);
 const isLoading = computed(() => appStore.value.isLoading);
 
-const handleStartGame = () => {
-  currentPage.value = 1;
-};
-
 const generateUserId = () => {
   const userId = v4();
   userStore.value.setUserId(userId);
   firebase.value.setUserId(userId);
 };
 
-const fetchAbTest = async () => {
-  appStore.value.setLoadState(LoadState.PENDING);
-  const abTest = await firebase.value.getBoolean(REMOTE_CONFIGS.BRANDS_AB);
-  userStore.value.setAbTest(abTest);
-  appStore.value.setLoadState(LoadState.RESOLVED);
+const generateUserProperties = () => {
+  const randomSeed = getRandomArbitrary(0, 1);
+  const properties = { abTest: randomSeed <= 0.5 };
+  userStore.value.setAbTest(properties.abTest);
+  firebase.value.setUserProperties(properties);
+};
+
+const logUserIdentifiedEvent = () => {
+  const deltaTime = getDeltaTime(appStore.value.latestTimestamp);
+  const userName = userStore.value.name;
+  const { latitude, longitude } = userStore.value.location;
+  const userIdentifiedEvent = new UserIdentified({
+    deltaTime,
+    userName,
+    latitude: Number(latitude),
+    longitude: Number(longitude),
+  });
+  firebase.value.log(userIdentifiedEvent);
 };
 
 const logApplicationStartEvent = () => {
@@ -51,11 +63,19 @@ const logApplicationStartEvent = () => {
   firebase.value.log(applicationStartEvent);
 };
 
+const handleAskUser = () => {
+  currentPage.value = 1;
+};
+
+const handleStartGame = () => {
+  logUserIdentifiedEvent();
+  currentPage.value = 2;
+};
+
 onMounted(async () => {
-  userStore.value.fetchCurrentLocation();
   appStore.value.pushCurrentTimestamp();
   generateUserId();
-  await fetchAbTest();
+  generateUserProperties();
   logApplicationStartEvent();
 });
 </script>

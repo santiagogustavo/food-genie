@@ -30,7 +30,10 @@ export const getItemsFromCatalogPayload = (payload: any) => {
     return [];
   }
   return payload.data.menu
-    .map((menu: any) => menu.itens)
+    .map((menu: any) => {
+      const subCatalog = menu.name;
+      return menu.itens.map((item: any) => ({ ...item, subCatalog }));
+    })
     .reduce((acc: any, cur: any) => [...acc, ...cur], []);
 };
 

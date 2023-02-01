@@ -9,13 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, watch } from 'vue';
 
 import Teller from '@/components/Teller.vue';
 import { getDeltaTime } from '@/utils/time';
 import { useAppStore } from '@/stores/app';
 import { useFirebase } from '@/composables/firebase';
 import GameStart from '@/services/analytics/events/GameStart';
+import GameEnd from '@/services/analytics/events/GameEnd';
 import { useUserStore } from '@/stores/user';
 import { RESULT_IFOOD } from '@/constants/urls';
 
@@ -39,6 +40,18 @@ const logGameStartEvent = () => {
   useFirebase().log(gameStartEvent);
 };
 
+const logGameEndEvent = () => {
+  const deltaTime = getDeltaTime(
+    appStore.value.timestamps[appStore.value.timestamps.length - cardDeckCount.value - 1]
+  );
+  const result = userStore.value.stringifiedResult;
+  const gameEndEvent = new GameEnd({
+    deltaTime,
+    result,
+  });
+  useFirebase().log(gameEndEvent);
+};
+
 const handleClickOpenIfood = () => {
   if (!merchantId.value || !itemId.value) {
     return;
@@ -51,6 +64,16 @@ const handleClickRetry = () => {
   userStore.value.resetAnswers();
   userStore.value.resetResults();
 };
+
+watch(
+  () => hasResults.value,
+  next => {
+    if (!next) {
+      return;
+    }
+    logGameEndEvent();
+  }
+);
 
 onMounted(() => {
   logGameStartEvent();

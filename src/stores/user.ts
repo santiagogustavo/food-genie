@@ -6,6 +6,7 @@ import { Option } from '@/types/questions';
 type UserStore = {
   id: string;
   abTest: boolean;
+  name: string;
   location: {
     latitude?: number;
     longitude?: number;
@@ -26,6 +27,7 @@ export const useUserStore = defineStore({
   state: (): UserStore => ({
     id: 'undefined',
     abTest: false,
+    name: '',
     location: {},
     answers: [],
     results: {
@@ -41,6 +43,9 @@ export const useUserStore = defineStore({
     },
     setAbTest(abTest: boolean) {
       this.abTest = abTest;
+    },
+    setName(name: string) {
+      this.name = name;
     },
     setLocation(location: GeolocationCoordinates) {
       this.location = {
@@ -68,12 +73,12 @@ export const useUserStore = defineStore({
         .then(({ coords }: any) => {
           userStore.setLoadState(LoadState.RESOLVED);
           userStore.setLocation(coords);
-          return coords;
+          return Promise.resolve(coords);
         })
         .catch((error: Error) => {
           userStore.setLoadState(LoadState.REJECTED);
           userStore.setError(error);
-          return error;
+          throw error;
         });
     },
     pushLatestAnswer(answer: Option) {

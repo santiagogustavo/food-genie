@@ -1,7 +1,8 @@
 import { initializeApp } from '@firebase/app';
 import {
-  getAnalytics,
+  initializeAnalytics,
   setUserId as fbSetUserId,
+  setUserProperties as fbSetUserProperties,
   logEvent,
   AnalyticsCallOptions,
 } from '@firebase/analytics';
@@ -18,12 +19,11 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = initializeAnalytics(app);
+const remoteConfig = getRemoteConfig(app);
 
 export const useFirebase = () => {
-  const analytics = getAnalytics(app);
-  const remoteConfig = getRemoteConfig(app);
   remoteConfig.settings.minimumFetchIntervalMillis = 0;
 
   const log = (event: AnalyticsEvent, options?: AnalyticsCallOptions) =>
@@ -32,8 +32,11 @@ export const useFirebase = () => {
   const setUserId = (userId: string, options?: AnalyticsCallOptions) =>
     fbSetUserId(analytics, userId, options);
 
+  const setUserProperties = (properties: any, options?: AnalyticsCallOptions) =>
+    fbSetUserProperties(analytics, properties, options);
+
   const getBoolean = async (name: string) =>
     await fetchAndActivate(remoteConfig).then(() => getValue(remoteConfig, name).asBoolean());
 
-  return { log, setUserId, getBoolean };
+  return { log, setUserId, setUserProperties, getBoolean };
 };

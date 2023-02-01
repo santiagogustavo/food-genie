@@ -157,6 +157,9 @@ watch(
 watch(
   () => currentQuestion.value,
   async next => {
+    if (!next) {
+      return;
+    }
     questionAlternatives.value = await getCurrentQuestion(next, userStore.value.latestAnswer?.name);
     if (questionAlternatives?.value[0]?.name === questionAlternatives?.value[1]?.name) {
       handleAnswerQuestion(questionAlternatives.value[0]);
