@@ -5,6 +5,9 @@ import { CATEGORY_PAGE, MERCHANT_CATALOG, SEARCH, SEARCH_HOME } from '@/constant
 const ifoodInstance = axios.create({
   baseURL: import.meta.env.VITE_GENIE_API,
   timeout: 15000,
+  headers: {
+    'Cache-Control': 'no-cache, no-store',
+  },
 });
 
 type SearchQuery = {
