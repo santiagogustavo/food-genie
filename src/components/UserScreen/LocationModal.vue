@@ -66,8 +66,8 @@ const handleFetchLocation = async () => {
   }
 
   &__pin {
-    width: 128px;
-    height: 128px;
+    width: $modal-image-size;
+    height: $modal-image-size;
     color: $color-yellow;
     margin: auto;
   }

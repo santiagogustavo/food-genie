@@ -6,7 +6,7 @@
       :teller-timeout="tellerTimeout"
     />
   </div>
-  <ResultModal :open="isModalOpen" @close="handleCloseResultModal" />
+  <ResultModal :open="isResultModalOpen" @close="handleCloseResultModal" />
 </template>
 
 <script setup lang="ts">
@@ -21,7 +21,7 @@ import GameStart from '@/services/analytics/events/GameStart';
 import GameEnd from '@/services/analytics/events/GameEnd';
 import { useUserStore } from '@/stores/user';
 
-const isModalOpen = ref(false);
+const isResultModalOpen = ref(false);
 const tellerTimeout = 1000;
 
 const appStore = computed(() => useAppStore());
@@ -52,7 +52,14 @@ const logGameEndEvent = () => {
 };
 
 const handleCloseResultModal = () => {
-  isModalOpen.value = false;
+  isResultModalOpen.value = false;
+};
+
+const handleGameEnd = () => {
+  logGameEndEvent();
+  setTimeout(() => {
+    isResultModalOpen.value = true;
+  }, tellerTimeout);
 };
 
 watch(
@@ -61,14 +68,14 @@ watch(
     if (!next) {
       return;
     }
-    logGameEndEvent();
-    setTimeout(() => {
-      isModalOpen.value = true;
-    }, tellerTimeout);
+    handleGameEnd();
   }
 );
 
 onMounted(() => {
+  if (hasResults.value) {
+    handleGameEnd();
+  }
   logGameStartEvent();
   appStore.value.pushCurrentTimestamp();
 });

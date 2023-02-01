@@ -49,7 +49,10 @@ const userStore = computed(() => useUserStore());
 const isModalOpen = ref(false);
 const deckCount = ref(0);
 const tableCount = ref(0);
-const canOpenModal = computed(() => isModalOpen.value && !appStore.value.isLoading);
+const canOpenModal = computed(
+  () => isModalOpen.value && !appStore.value.isLoading && !appStore.value.isErrorModalOpen
+);
+const answers = computed(() => userStore.value.answers);
 
 const currentQuestion = computed(() => {
   switch (tableCount.value) {
@@ -120,6 +123,16 @@ const handleResetGame = () => {
   latestReactions.value = [];
   currentReaction.value = '';
 };
+
+watch(
+  () => answers.value.length,
+  next => {
+    if (next) {
+      return;
+    }
+    handleResetGame();
+  }
+);
 
 watch(
   () => props.hasAnsweredAllQuestions,

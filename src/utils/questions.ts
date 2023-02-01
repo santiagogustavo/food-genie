@@ -9,6 +9,7 @@ import {
   isDessertAlsoMeal,
 } from '@/utils/ifood';
 import { useUserStore } from '@/stores/user';
+import { useAppStore } from '@/stores/app';
 
 const defaultQuestion = [
   { name: 'a', label: 'A' },
@@ -42,6 +43,11 @@ export const getCategoryQuestion = async (type: string) => {
 export const getBrandQuestion = async (categoryId: string) => {
   const brands = await useIfoodStore().fetchCategory(categoryId);
 
+  if (!brands.length) {
+    useAppStore().setIsErrorModalOpen(true);
+    return;
+  }
+
   const brandA = getRandomFromArray(brands);
   const brandB = getRandomFromArrayDedup(brands, brandA, 'id');
 
@@ -70,6 +76,10 @@ export const getFillingOrToppingQuestion = async (merchantOrCategoryId: string) 
   }
 
   const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
+  if (!catalog.length) {
+    useAppStore().setIsErrorModalOpen(true);
+    return;
+  }
 
   const itemA = getRandomFromArray(catalog);
   const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');

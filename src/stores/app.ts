@@ -7,16 +7,21 @@ type AppStore = {
   loadState: LoadState;
   timestamps: Array<string>;
   error?: Error;
+  isErrorModalOpen: boolean;
 };
 export const useAppStore = defineStore({
   id: 'app',
   state: (): AppStore => ({
     loadState: LoadState.INIT,
     timestamps: [],
+    isErrorModalOpen: false,
   }),
   actions: {
     setLoadState(loadState: LoadState) {
       this.loadState = loadState;
+    },
+    setIsErrorModalOpen(isErrorModalOpen: boolean) {
+      this.isErrorModalOpen = isErrorModalOpen;
     },
     pushCurrentTimestamp() {
       this.timestamps = [...this.timestamps, getTimestamp()];

@@ -111,8 +111,8 @@ const handleClickOpenIfood = () => {
     position: absolute;
     top: 0;
     left: 0;
-    width: 128px;
-    height: 128px;
+    width: $modal-image-size;
+    height: $modal-image-size;
   }
 
   &__star-filled {

@@ -1,8 +1,9 @@
 <template>
-  <LoadingScreen :loading="isLoading" />
+  <LoadingScreen :loading="isLoading && !isErrorModalOpen" />
   <Splash v-if="currentPage === 0" @start="handleAskUser" />
   <User v-if="currentPage === 1" @start="handleStartGame" />
   <Game v-if="currentPage === 2" />
+  <ErrorModal :open="isErrorModalOpen" />
 </template>
 
 <script setup lang="ts">
@@ -19,12 +20,15 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import ApplicationStart from '@/services/analytics/events/ApplicationStart';
 import { getRandomArbitrary } from '@/utils/math';
-import UserIdentified from './services/analytics/events/UserIdentified';
-import { getDeltaTime } from './utils/time';
+import UserIdentified from '@/services/analytics/events/UserIdentified';
+import { getDeltaTime } from '@/utils/time';
+import ErrorModal from '@/components/ErrorScreen/ErrorModal.vue';
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());
 const firebase = computed(() => useFirebase());
+
+const isErrorModalOpen = computed(() => appStore.value.isErrorModalOpen);
 
 const currentPage = ref(0);
 const isLoading = computed(() => appStore.value.isLoading);
