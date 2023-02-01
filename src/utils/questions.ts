@@ -23,38 +23,49 @@ export const getTypeQuestion = () =>
   ]);
 
 export const getCategoryQuestion = async (type: string) => {
-  const categories = await useIfoodStore().fetchCategories();
-  const data = filterCategoriesFromResults(categories, type);
+  try {
+    const categories = await useIfoodStore().fetchCategories();
+    const data = filterCategoriesFromResults(categories, type);
 
-  const categoryA = getRandomFromArray(data);
-  const categoryB = getRandomFromArrayDedup(data, categoryA, 'id');
+    if (!data.length) {
+      throw new Error();
+    }
 
-  const isAAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryA.title);
-  const isBAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryB.title);
-  const labelA = `${categoryA.title}${isAAlsoMeal ? ' Doce' : ''}`;
-  const labelB = `${categoryB.title}${isBAlsoMeal ? ' Doce' : ''}`;
+    const categoryA = getRandomFromArray(data);
+    const categoryB = getRandomFromArrayDedup(data, categoryA, 'id');
 
-  return Promise.resolve([
-    { name: getCategoryIdFromAction(categoryA.action), label: labelA },
-    { name: getCategoryIdFromAction(categoryB.action), label: labelB },
-  ]);
+    const isAAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryA.title);
+    const isBAlsoMeal = type === TYPE.DESSERT && isDessertAlsoMeal(categoryB.title);
+    const labelA = `${categoryA.title}${isAAlsoMeal ? ' Doce' : ''}`;
+    const labelB = `${categoryB.title}${isBAlsoMeal ? ' Doce' : ''}`;
+
+    return Promise.resolve([
+      { name: getCategoryIdFromAction(categoryA.action), label: labelA },
+      { name: getCategoryIdFromAction(categoryB.action), label: labelB },
+    ]);
+  } catch {
+    useAppStore().setIsErrorModalOpen(true);
+  }
 };
 
 export const getBrandQuestion = async (categoryId: string) => {
-  const brands = await useIfoodStore().fetchCategory(categoryId);
+  try {
+    const brands = await useIfoodStore().fetchCategory(categoryId);
 
-  if (!brands.length) {
+    if (!brands.length) {
+      throw new Error();
+    }
+
+    const brandA = getRandomFromArray(brands);
+    const brandB = getRandomFromArrayDedup(brands, brandA, 'id');
+
+    return Promise.resolve([
+      { name: getMerchantIdFromAction(brandA.action), label: brandA.name },
+      { name: getMerchantIdFromAction(brandB.action), label: brandB.name },
+    ]);
+  } catch {
     useAppStore().setIsErrorModalOpen(true);
-    return;
   }
-
-  const brandA = getRandomFromArray(brands);
-  const brandB = getRandomFromArrayDedup(brands, brandA, 'id');
-
-  return Promise.resolve([
-    { name: getMerchantIdFromAction(brandA.action), label: brandA.name },
-    { name: getMerchantIdFromAction(brandB.action), label: brandB.name },
-  ]);
 };
 
 const fetchAndGetRandomMerchant = async (categoryId: string) => {
@@ -66,28 +77,31 @@ const fetchAndGetRandomMerchant = async (categoryId: string) => {
 };
 
 export const getFillingOrToppingQuestion = async (merchantOrCategoryId: string) => {
-  const merchants = await useIfoodStore().merchants;
-  let merchantId;
+  try {
+    const merchants = await useIfoodStore().merchants;
+    let merchantId;
 
-  if (!merchants?.length) {
-    merchantId = await fetchAndGetRandomMerchant(merchantOrCategoryId);
-  } else {
-    merchantId = merchantOrCategoryId;
-  }
+    if (!merchants?.length) {
+      merchantId = await fetchAndGetRandomMerchant(merchantOrCategoryId);
+    } else {
+      merchantId = merchantOrCategoryId;
+    }
 
-  const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
-  if (!catalog.length) {
+    const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
+    if (!catalog.length) {
+      throw new Error();
+    }
+
+    const itemA = getRandomFromArray(catalog);
+    const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');
+
+    return Promise.resolve([
+      { name: itemA?.id, label: itemA?.description },
+      { name: itemB?.id, label: itemB?.description },
+    ]);
+  } catch {
     useAppStore().setIsErrorModalOpen(true);
-    return;
   }
-
-  const itemA = getRandomFromArray(catalog);
-  const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');
-
-  return Promise.resolve([
-    { name: itemA?.id, label: itemA?.description },
-    { name: itemB?.id, label: itemB?.description },
-  ]);
 };
 
 export const getCurrentQuestion = (question: Question, param: string) => {

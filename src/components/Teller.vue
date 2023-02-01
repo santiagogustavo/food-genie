@@ -50,7 +50,11 @@ const isModalOpen = ref(false);
 const deckCount = ref(0);
 const tableCount = ref(0);
 const canOpenModal = computed(
-  () => isModalOpen.value && !appStore.value.isLoading && !appStore.value.isErrorModalOpen
+  () =>
+    isModalOpen.value &&
+    !!questionAlternatives.value &&
+    !appStore.value.isLoading &&
+    !appStore.value.isErrorModalOpen
 );
 const answers = computed(() => userStore.value.answers);
 
@@ -174,8 +178,14 @@ watch(
 watch(
   () => currentQuestion.value,
   async next => {
-    questionAlternatives.value = await getCurrentQuestion(next, userStore.value.latestAnswer?.name);
-    if (questionAlternatives?.value[0]?.name === questionAlternatives?.value[1]?.name) {
+    const nextAlternatives = await getCurrentQuestion(next, userStore.value.latestAnswer?.name);
+    if (!nextAlternatives) {
+      return;
+    }
+
+    questionAlternatives.value = nextAlternatives;
+
+    if (questionAlternatives.value[0]?.name === questionAlternatives?.value[1]?.name) {
       handleAnswerQuestion(questionAlternatives.value[0]);
     }
   }
