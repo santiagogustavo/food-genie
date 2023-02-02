@@ -66,6 +66,7 @@ const handleAnswer = (option: any) => {
     font-family: 'Card Characters';
     color: $color-yellow;
     font-size: 32px;
+    background-color: $color-gray-darkest !important;
   }
 }
 </style>

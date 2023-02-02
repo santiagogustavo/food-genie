@@ -58,3 +58,21 @@ export const getMerchantFromId = (results: any, id: string) =>
 
 export const getMerchantFromItemId = (results: any, itemId: string) =>
   results.find((result: any) => !!result?.items?.find((item: any) => item.id === itemId));
+
+export const filterItemsFromSubcategories = (items: any, type: string) => {
+  const blacklist =
+    type === TYPE.MEAL ? ['doce', 'bebida', 'sobremesa', 'adicional'] : ['salgado', 'adicional'];
+  return items.filter((item: any) => {
+    let valid = true;
+
+    blacklist.forEach(blocked => {
+      if (
+        item.subCatalog.toLowerCase().includes(blocked) ||
+        item.description.toLowerCase().includes(blocked)
+      ) {
+        valid = false;
+      }
+    });
+    return valid;
+  });
+};

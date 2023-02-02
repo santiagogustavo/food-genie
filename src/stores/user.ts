@@ -13,6 +13,7 @@ type UserStore = {
   };
   answers: Array<Option>;
   results: {
+    type?: string;
     merchant?: Option;
     item?: Option;
   };
@@ -31,6 +32,7 @@ export const useUserStore = defineStore({
     location: {},
     answers: [],
     results: {
+      type: undefined,
       merchant: undefined,
       item: undefined,
     },
@@ -58,6 +60,9 @@ export const useUserStore = defineStore({
     },
     setError(error: Error) {
       this.error = error;
+    },
+    setResultsType(type: string) {
+      this.results.type = type;
     },
     setResultsMerchant(merchant: Option) {
       this.results.merchant = merchant;
@@ -89,6 +94,7 @@ export const useUserStore = defineStore({
     },
     resetResults() {
       this.results = {
+        type: undefined,
         merchant: undefined,
         item: undefined,
       };

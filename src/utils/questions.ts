@@ -4,6 +4,7 @@ import { useIfoodStore } from '@/stores/ifood';
 import { getRandomFromArray, getRandomFromArrayDedup } from '@/utils/math';
 import {
   filterCategoriesFromResults,
+  filterItemsFromSubcategories,
   getCategoryIdFromAction,
   getMerchantIdFromAction,
   isDessertAlsoMeal,
@@ -76,21 +77,21 @@ const fetchAndGetRandomMerchant = async (categoryId: string) => {
   return merchantId;
 };
 
-export const getFillingOrToppingQuestion = async (merchantOrCategoryId: string) => {
+export const getFillingOrToppingQuestion = async (categoryId: string) => {
   try {
-    const merchants = await useIfoodStore().merchants;
-    let merchantId;
+    let merchantId = useUserStore().results.merchant?.name;
 
-    if (!merchants?.length) {
-      merchantId = await fetchAndGetRandomMerchant(merchantOrCategoryId);
-    } else {
-      merchantId = merchantOrCategoryId;
+    if (!merchantId) {
+      merchantId = await fetchAndGetRandomMerchant(categoryId);
     }
 
-    const catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
+    let catalog = await useIfoodStore().fetchMerchantCatalog(merchantId);
     if (!catalog.length) {
       throw new Error();
     }
+
+    const type = useUserStore().results.type || TYPE.MEAL;
+    catalog = filterItemsFromSubcategories(catalog, type);
 
     const itemA = getRandomFromArray(catalog);
     const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');

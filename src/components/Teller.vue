@@ -1,7 +1,7 @@
 <template>
   <div class="teller">
     <TellerReaction class="teller__reaction" :reaction="currentReaction" />
-    <CardsDeck class="teller__deck" :count="deckCount" />
+    <CardsDeck class="teller__deck" :total="cardDeckCount" :count="deckCount" />
     <CardsTable class="teller__table" :cards="cards" />
   </div>
   <QuestionModal
@@ -47,8 +47,6 @@ const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());
 
 const isModalOpen = ref(false);
-const deckCount = ref(0);
-const tableCount = ref(0);
 const canOpenModal = computed(
   () =>
     isModalOpen.value &&
@@ -57,6 +55,8 @@ const canOpenModal = computed(
     !appStore.value.isErrorModalOpen
 );
 const answers = computed(() => userStore.value.answers);
+const tableCount = computed(() => answers.value.length);
+const deckCount = computed(() => props.cardDeckCount - tableCount.value);
 
 const currentQuestion = computed(() => {
   switch (tableCount.value) {
@@ -77,26 +77,21 @@ const questionAlternatives = ref();
 const currentReaction = ref('');
 const latestReactions = ref(new Array<number>());
 
-const cards = ref(new Array<any>());
+const cards = computed(() =>
+  answers.value.map((answer: Option, index: number) => ({
+    name: String(index + 1),
+    label: answer.label,
+  }))
+);
 
 const logAnswerEvent = (optionChosen: string) => {
   const latestTimestamp = appStore.value.latestTimestamp;
   const deltaTime = getDeltaTime(latestTimestamp);
-  const cardNumber = cards.value.length + 1;
+  const cardNumber = answers.value.length + 1;
   const optionA = questionAlternatives?.value[0]?.label || '';
   const optionB = questionAlternatives?.value[1]?.label || '';
   const userAnswerEvent = new UserAnswer({ deltaTime, cardNumber, optionA, optionB, optionChosen });
   useFirebase().log(userAnswerEvent);
-};
-
-const handleAddCard = (option: Option) => {
-  if (deckCount.value === 0) {
-    return;
-  }
-  tableCount.value = tableCount.value + 1;
-  deckCount.value = deckCount.value - 1;
-
-  cards.value = [...cards.value, { name: String(tableCount.value), label: option.label }];
 };
 
 const handleAskQuestion = () => {
@@ -104,7 +99,9 @@ const handleAskQuestion = () => {
 };
 
 const setCurrentResults = (option: Option) => {
-  if (currentQuestion.value === Question.BRAND) {
+  if (currentQuestion.value === Question.TYPE) {
+    userStore.value.setResultsType(option.name);
+  } else if (currentQuestion.value === Question.BRAND) {
     userStore.value.setResultsMerchant(option);
   } else if (currentQuestion.value === Question.FILLING_OR_TOPPING) {
     userStore.value.setResultsItem(option);
@@ -115,15 +112,11 @@ const handleAnswerQuestion = (option: Option) => {
   isModalOpen.value = false;
   logAnswerEvent(option.label);
   setCurrentResults(option);
-  handleAddCard(option);
   appStore.value.pushCurrentTimestamp();
   userStore.value.pushLatestAnswer(option);
 };
 
 const handleResetGame = () => {
-  deckCount.value = props.cardDeckCount;
-  tableCount.value = 0;
-  cards.value = [];
   latestReactions.value = [];
   currentReaction.value = '';
 };
@@ -201,6 +194,9 @@ onMounted(async () => {
     currentQuestion.value,
     userStore.value.latestAnswer?.name
   );
+  setTimeout(() => {
+    handleAskQuestion();
+  }, props.tellerTimeout);
 });
 </script>
 

@@ -3,7 +3,7 @@
     <div class="cards-deck__stack">
       <TransitionGroup name="deck-slide">
         <CardsBack
-          v-for="card in count"
+          v-for="card in internalCardCount"
           :key="`card-${card}`"
           :name="`${card}`"
           :count="card"
@@ -15,9 +15,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onMounted } from 'vue';
 import CardsBack from '@/components/Cards/CardsBack.vue';
 
 const props = defineProps({
+  total: {
+    type: Number,
+    default: 0,
+  },
   count: {
     type: Number,
     default: 0,
@@ -29,6 +34,19 @@ const props = defineProps({
 });
 
 const totalOffset = `${props.count * props.offset + 12}px`;
+
+const internalCardCount = ref(0);
+
+watch(
+  () => props.count,
+  next => {
+    internalCardCount.value = next;
+  }
+);
+
+onMounted(() => {
+  internalCardCount.value = props.total;
+});
 </script>
 
 <style lang="scss">
