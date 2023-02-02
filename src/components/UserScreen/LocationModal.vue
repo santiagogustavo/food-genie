@@ -10,7 +10,7 @@
         está habilitada!
       </p>
       <br />
-      <button @click="handleFetchLocation">Me localize!</button>
+      <Button @click="handleFetchLocation">Me localize!</Button>
     </div>
   </Modal>
 </template>
@@ -23,6 +23,7 @@ import Modal from '@/components/Modal.vue';
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { LoadState } from '@/types/state';
+import Button from '@/components/Button.vue';
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());

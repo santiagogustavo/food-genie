@@ -3,14 +3,14 @@
     <div class="question-modal">
       <Title class="question-modal__title" as="h2">Você prefere...?</Title>
       <div class="question-modal__alternatives">
-        <button
+        <Button
           v-for="alternative in alternatives"
           :key="`alternative-${alternative.name}`"
           class="question-modal__button"
           @click="handleAnswer(alternative)"
         >
           {{ alternative.label }}
-        </button>
+        </Button>
       </div>
     </div>
   </Modal>
@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import Modal from '@/components/Modal.vue';
 import Title from '@/components/Title.vue';
+import Button from '@/components/Button.vue';
 
 defineProps({
   alternatives: {

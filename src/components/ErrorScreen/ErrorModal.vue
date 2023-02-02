@@ -7,7 +7,7 @@
         Pode ser que os restaurantes não estejam abertos ou o item procurado não está disponível
       </p>
       <br />
-      <button @click="handleClickRetry">Jogar de novo</button>
+      <Button @click="handleClickRetry">Jogar de novo</Button>
     </div>
   </Modal>
 </template>
@@ -17,6 +17,7 @@ import { computed } from 'vue';
 import FaceWithSpiralEyes from '@/assets/svgs/FaceWithSpiralEyes.vue';
 
 import Modal from '@/components/Modal.vue';
+import Button from '@/components/Button.vue';
 import { useUserStore } from '@/stores/user';
 import { useAppStore } from '@/stores/app';
 

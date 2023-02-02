@@ -14,13 +14,13 @@
       </div>
       <div class="user__row">
         <h4 class="user__row__label">Sua localização:</h4>
-        <button class="user__row__input" @click="handleOpenLocationModal">
+        <Button class="user__row__input" @click="handleOpenLocationModal">
           <MapPin class="user__pin--small" />
-        </button>
+        </Button>
       </div>
       <p>Não se preocupe, <b>seus dados pessoais não serão armazenados!</b></p>
     </div>
-    <button :disabled="!canStartGame" @click="handleClickStart()">Ok, tudo pronto!</button>
+    <Button :disabled="!canStartGame" @click="handleClickStart()">Ok, tudo pronto!</Button>
   </div>
   <LocationModal :open="isModalOpen" @located="handleLocated" />
 </template>
@@ -31,6 +31,7 @@ import LocationModal from '@/components/UserScreen/LocationModal.vue';
 import TextField from '@/components/TextField.vue';
 import MapPin from '@/assets/svgs/MapPin.vue';
 import { useUserStore } from '@/stores/user';
+import Button from '@/components/Button.vue';
 
 const userStore = computed(() => useUserStore());
 
@@ -71,6 +72,7 @@ const handleOpenLocationModal = () => {
   justify-content: center;
   text-align: center;
   padding: 16px;
+  color: $color-white;
 
   &__pin--small {
     height: 1rem;

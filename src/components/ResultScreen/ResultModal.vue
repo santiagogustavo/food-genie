@@ -9,8 +9,8 @@
         {{ result }}
       </h2>
       <div class="result-modal__actions">
-        <button @click="handleClickOpenIfood">Abrir resultado</button>
-        <button @click="handleClickRetry">Jogar de novo</button>
+        <Button @click="handleClickOpenIfood">Abrir resultado</Button>
+        <Button @click="handleClickRetry">Jogar de novo</Button>
       </div>
     </div>
   </Modal>
@@ -22,6 +22,7 @@ import { computed } from 'vue';
 import StarFilled from '@/assets/svgs/StarFilled.vue';
 import StarOutlined from '@/assets/svgs/StarOutlined.vue';
 import Modal from '@/components/Modal.vue';
+import Button from '@/components/Button.vue';
 import { RESULT_IFOOD } from '@/constants/urls';
 import { useUserStore } from '@/stores/user';
 import ApplicationClose from '@/services/analytics/events/ApplicationClose';

@@ -2,13 +2,14 @@
   <div class="splash">
     <Title>Food Genie</Title>
     <TellerReaction reaction="Você parece perdido, gostaria de jogar um jogo?" />
-    <button class="splash__button" @click="handleClickStart">Jogar</button>
+    <Button class="splash__button" @click="handleClickStart">Jogar</Button>
   </div>
 </template>
 
 <script setup lang="ts">
 import Title from '@/components/Title.vue';
 import TellerReaction from '@/components/TellerReaction.vue';
+import Button from '@/components/Button.vue';
 
 const emit = defineEmits(['start']);
 
