@@ -73,7 +73,11 @@ const fetchAndGetRandomMerchant = async (categoryId: string) => {
   const merchants = await useIfoodStore().fetchCategory(categoryId);
   const randomMerchant = getRandomFromArray(merchants);
   const merchantId = String(getMerchantIdFromAction(randomMerchant.action));
-  useUserStore().setResultsMerchant({ name: merchantId, label: randomMerchant.name });
+  useUserStore().setResultsMerchant({
+    name: merchantId,
+    label: randomMerchant.name,
+    question: Question.BRAND,
+  });
   return merchantId;
 };
 
