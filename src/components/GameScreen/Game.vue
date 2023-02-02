@@ -22,7 +22,7 @@ import GameEnd from '@/services/analytics/events/GameEnd';
 import { useUserStore } from '@/stores/user';
 
 const isResultModalOpen = ref(false);
-const tellerTimeout = 1000;
+const tellerTimeout = 2500;
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());

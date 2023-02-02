@@ -1,5 +1,6 @@
 <template>
   <div class="user">
+    <Bibliomancy class="animation--floating" />
     <div class="user__disclaimer">
       <h2>Primeiro, precisamos te perguntar...</h2>
       <div class="user__row">
@@ -32,6 +33,7 @@ import TextField from '@/components/TextField.vue';
 import MapPin from '@/assets/svgs/MapPin.vue';
 import { useUserStore } from '@/stores/user';
 import Button from '@/components/Button.vue';
+import Bibliomancy from '../Illustrations/Bibliomancy.vue';
 
 const userStore = computed(() => useUserStore());
 

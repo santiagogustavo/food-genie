@@ -8,4 +8,5 @@ export const enum Question {
 export type Option = {
   name: string;
   label: string;
+  question: Question;
 };

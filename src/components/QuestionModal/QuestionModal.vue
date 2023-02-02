@@ -68,6 +68,10 @@ const handleAnswer = (option: any) => {
     color: $color-yellow;
     font-size: 32px;
     background-color: $color-gray-darkest !important;
+
+    @include screen-s {
+      font-size: 24px;
+    }
   }
 }
 </style>

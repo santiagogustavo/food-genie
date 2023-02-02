@@ -67,6 +67,10 @@ onMounted(() => {
   height: calc($cards-width + 16px);
   width: calc($cards-height + 16px);
 
+  @include screen-s {
+    transform: scale(0.8);
+  }
+
   &__stack {
     position: relative;
     height: calc($cards-height + 16px);

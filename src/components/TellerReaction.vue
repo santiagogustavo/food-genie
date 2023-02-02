@@ -39,11 +39,16 @@ watch(
 
 .teller-reaction {
   min-height: 25px;
-  text-align: center;
+  height: 25px;
 
   &__text {
     color: $color-yellow;
+    font-weight: bold;
     animation: chat 200ms ease;
+    text-align: center;
+    background-color: $color-gray-darkest;
+    padding: 8px;
+    border-radius: 8px;
   }
 }
 </style>

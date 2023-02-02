@@ -32,8 +32,10 @@ const generateRotation = () => getRandomInt(-5, 5);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  transform-origin: bottom center;
-  transform: rotateX(15deg);
+
+  @include screen-s {
+    transform: scale(0.9);
+  }
 
   & > .playing-card {
     margin: 16px;

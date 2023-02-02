@@ -1,5 +1,6 @@
 <template>
   <div class="teller">
+    <CrystalBall />
     <TellerReaction class="teller__reaction" :reaction="currentReaction" />
     <CardsDeck class="teller__deck" :total="cardDeckCount" :count="deckCount" />
     <CardsTable class="teller__table" :cards="cards" />
@@ -17,6 +18,7 @@ import TellerReaction from '@/components/TellerReaction.vue';
 import CardsDeck from '@/components/Cards/CardsDeck.vue';
 import CardsTable from '@/components/Cards/CardsTable.vue';
 import QuestionModal from '@/components/QuestionModal/QuestionModal.vue';
+import CrystalBall from '@/components/Illustrations/CrystalBall.vue';
 import { useFirebase } from '@/composables/firebase';
 
 import { reactions } from '@/data/quotes';
@@ -81,6 +83,7 @@ const cards = computed(() =>
   answers.value.map((answer: Option, index: number) => ({
     name: String(index + 1),
     label: answer.label,
+    question: answer.question,
   }))
 );
 
@@ -209,10 +212,17 @@ onMounted(async () => {
 
   &__reaction {
     margin-top: 16px;
+    @include screen-s {
+      margin-top: 8px;
+    }
   }
 
   &__table {
     margin-top: 64px;
+
+    @include screen-s {
+      margin-top: 32px;
+    }
   }
 }
 </style>
