@@ -14,7 +14,12 @@
   font-weight: 500;
   font-family: inherit;
   background-color: $color-gray-darkest;
+  color: $color-white;
   transition: border-color 0.25s;
+
+  &:disabled {
+    color: darken($color-white, 50%);
+  }
 
   &:hover {
     border-color: #646cff;

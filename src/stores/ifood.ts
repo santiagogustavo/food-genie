@@ -30,7 +30,6 @@ export const useIfoodStore = defineStore({
       this.loadState = LoadState.PENDING;
     },
     handleResolveSearchResults(results: any, key: string) {
-      console.log(results);
       const appStore = useAppStore();
       appStore.setLoadState(LoadState.RESOLVED);
 
