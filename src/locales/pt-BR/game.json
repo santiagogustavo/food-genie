@@ -1,0 +1,25 @@
+{
+  "questions": {
+    "type": {
+      "meal": "Refeição",
+      "dessert": "Sobremesa"
+    }
+  },
+  "tellerReactions": {
+    "1": "O destino foi traçado.",
+    "2": "Está escrito nas estrelas.",
+    "3": "Que tal?",
+    "4": "As cartas não mentem.",
+    "5": "Seja feita a sua vontade.",
+    "6": "Na palma da sua mão."
+  },
+  "questionModal": {
+    "title": "Você prefere...?"
+  },
+  "resultModal": {
+    "actions": {
+      "open": "Abrir resultado",
+      "retry": "Jogar de novo"
+    }
+  }
+}

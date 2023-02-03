@@ -1,0 +1,15 @@
+{
+  "title": "Food Genie",
+  "teller": "Você parece perdido e com fome... gostaria de jogar um jogo?",
+  "actions": {
+    "start": "Jogar agora",
+    "about": "Sobre o jogo"
+  },
+  "aboutModal": {
+    "title": "Sobre o jogo",
+    "paragraph1": "**Food Genie** é um projeto de conclusão de curso para a pós-graduação em Data Science Analytics. Desenvolvido por **Gustavo Santiago** e sua orientadora **Profª Ana Claudia Belfort**.",
+    "paragraph2": "A cartomante é uma pessoa que, supostamente, adivinha o futuro, o presente e o passado, através da interpretação de cartas de um baralho. Criamos nossa própria cartomante para este jogo de adivinhação, que tem como objetivo fazer perguntas rápidas de **A ou B** para ajudar pessoas que **não sabem ou estão indecisas** sobre qual comida pedir.",
+    "paragraph3": "Utilizando informações públicas da plataforma **iFood**, o sistema faz de 3 a 4 perguntas e propõe uma saborosa resposta ao final. **O jogador não tem limite de quantas vezes consultar a cartomante, e nenhuma resposta é a mais certa ou errada (apenas a resposta mais incisiva dentro daquela sequência de cartas).**",
+    "close": "Ok, entendi!"
+  }
+}

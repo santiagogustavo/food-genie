@@ -2,26 +2,26 @@
   <div class="user">
     <Bibliomancy class="animation--floating" />
     <div class="user__disclaimer">
-      <h2>Primeiro, precisamos te perguntar...</h2>
+      <h2>{{ $t('user.title') }}</h2>
       <div class="user__row">
-        <h4 class="user__row__label">Seu nome:</h4>
+        <h4 class="user__row__label">{{ $t('user.forms.name') }}</h4>
         <TextField
           class="user__row__input"
-          placeholder="Digite aqui"
+          :placeholder="$t('user.forms.namePlaceholder')"
           :value="userName"
           @change="handleInputName"
           @input="handleInputName"
         />
       </div>
       <div class="user__row">
-        <h4 class="user__row__label">Sua localização:</h4>
+        <h4 class="user__row__label">{{ $t('user.forms.location') }}</h4>
         <Button class="user__row__input" @click="handleOpenLocationModal">
           <MapPin class="user__pin--small" />
         </Button>
       </div>
-      <p>Não se preocupe, <b>seus dados pessoais não serão armazenados!</b></p>
+      <Markdown :value="$t('user.disclaimer')" />
     </div>
-    <Button :disabled="!canStartGame" @click="handleClickStart()">Ok, tudo pronto!</Button>
+    <Button :disabled="!canStartGame" @click="handleClickStart">{{ $t('user.start') }}</Button>
   </div>
   <LocationModal :open="isModalOpen" @located="handleLocated" />
 </template>
@@ -40,6 +40,7 @@ import { getDeltaTime } from '@/utils/time';
 import Bibliomancy from '@/components/Illustrations/Bibliomancy.vue';
 import { useAppStore } from '@/stores/app';
 import { useFirebase } from '@/composables/firebase';
+import Markdown from '@/components/Markdown.vue';
 
 const userStore = computed(() => useUserStore());
 

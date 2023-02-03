@@ -2,12 +2,12 @@
   <Modal>
     <div class="error-modal">
       <FaceWithSpiralEyes class="error-modal__face" />
-      <h3>Ops, parece que algo não funcionou!</h3>
+      <h3>{{ $t('app.errorModal.title') }}</h3>
       <p>
-        Pode ser que os restaurantes não estejam abertos ou o item procurado não está disponível
+        {{ $t('app.errorModal.message') }}
       </p>
       <br />
-      <Button @click="handleClickRetry">Jogar de novo</Button>
+      <Button @click="handleClickRetry">{{ $t('app.errorModal.retry') }}</Button>
     </div>
   </Modal>
 </template>

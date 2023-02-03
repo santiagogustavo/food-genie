@@ -2,15 +2,14 @@
   <Modal>
     <div class="location-modal">
       <MapPin class="location-modal__pin" />
-      <h3>Precisamos da sua localização para garantir que o jogo funcione corretamente, ok?</h3>
-      <p v-if="hasError" class="location-modal__error">
-        Ops, não foi possível recuperar sua localização.
-        <br />
-        Por favor tente novamente, e se o problema persistir verifique se a permissão para o local
-        está habilitada!
-      </p>
+      <h3>{{ $t('user.locationModal.title') }}</h3>
+      <Markdown
+        v-if="hasError"
+        class="location-modal__error"
+        :value="$t('user.locationModal.error')"
+      />
       <br />
-      <Button @click="handleFetchLocation">Me localize!</Button>
+      <Button @click="handleFetchLocation">{{ $t('user.locationModal.locate') }}</Button>
     </div>
   </Modal>
 </template>
@@ -24,6 +23,7 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { LoadState } from '@/types/state';
 import Button from '@/components/Button.vue';
+import Markdown from '@/components/Markdown.vue';
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());

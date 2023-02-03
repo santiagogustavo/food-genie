@@ -1,8 +1,10 @@
+import { t } from '@/i18n';
+
 export const reactions = [
-  'O destino foi traçado.',
-  'Está escrito nas estrelas.',
-  'Que tal?',
-  'As cartas não mentem.',
-  'Seja feita a sua vontade.',
-  'Na palma da sua mão.',
+  t('game.tellerReactions.1'),
+  t('game.tellerReactions.2'),
+  t('game.tellerReactions.3'),
+  t('game.tellerReactions.4'),
+  t('game.tellerReactions.5'),
+  t('game.tellerReactions.6'),
 ];

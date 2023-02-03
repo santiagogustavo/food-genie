@@ -1,0 +1,15 @@
+{
+  "title": "Primeiro, precisamos te perguntar...",
+  "forms": {
+    "name": "Seu nome:",
+    "namePlaceholder": "Digite aqui",
+    "location": "Sua localização:"
+  },
+  "disclaimer": "Não se preocupe, **seus dados pessoais não serão armazenados!**",
+  "start": "Ok, tudo pronto!",
+  "locationModal": {
+    "title": "Precisamos da sua localização para garantir que o jogo funcione corretamente, ok?",
+    "error": "Ops, não foi possível recuperar sua localização.\n\nPor favor tente novamente, e se o problema persistir verifique se a permissão para o local está habilitada!",
+    "locate": "Me localize!"
+  }
+}

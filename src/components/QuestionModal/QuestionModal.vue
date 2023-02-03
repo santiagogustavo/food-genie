@@ -1,7 +1,7 @@
 <template>
   <Modal>
     <div class="question-modal">
-      <Title class="question-modal__title" as="h2">Você prefere...?</Title>
+      <Title class="question-modal__title" as="h2">{{ $t('game.questionModal.title') }}</Title>
       <div class="question-modal__alternatives">
         <Button
           v-for="alternative in alternatives"

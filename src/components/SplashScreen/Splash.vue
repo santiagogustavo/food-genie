@@ -1,11 +1,15 @@
 <template>
   <div class="splash">
     <FortuneTeller class="animation--floating" />
-    <Title>Food Genie</Title>
-    <TellerReaction reaction="Você parece perdido e com fome... gostaria de jogar um jogo?" />
+    <Title>{{ $t('splash.title') }}</Title>
+    <TellerReaction :reaction="$t('splash.teller')" />
     <div class="splash__actions">
-      <Button class="splash__button" @click="handleClickStart">Jogar agora</Button>
-      <Button class="splash__button" @click="handleClickAbout">Sobre o jogo</Button>
+      <Button class="splash__button" @click="handleClickStart">
+        {{ $t('splash.actions.start') }}
+      </Button>
+      <Button class="splash__button" @click="handleClickAbout">
+        {{ $t('splash.actions.about') }}
+      </Button>
     </div>
   </div>
   <AboutModal :open="isModalOpen" @close="handleCloseModal" />

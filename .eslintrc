@@ -18,11 +18,13 @@
     "ecmaVersion": 2021,
     "sourceType": "module"
   },
-  "plugins": ["prettier", "@typescript-eslint"],
+  "plugins": ["prettier", "risxss", "@typescript-eslint"],
   "rules": {
     "no-undef": "off",
     "no-unused-vars": "off",
     "vue/multi-word-component-names": "off",
+    "vue/no-v-html": "off",
+    "risxss/catch-potential-xss-vue": "error",
     "@typescript-eslint/no-explicit-any": "off"
   }
 }

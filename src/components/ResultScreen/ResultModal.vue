@@ -9,8 +9,8 @@
         {{ result }}
       </h2>
       <div class="result-modal__actions">
-        <Button @click="handleClickOpenIfood">Abrir resultado</Button>
-        <Button @click="handleClickRetry">Jogar de novo</Button>
+        <Button @click="handleClickOpenIfood">{{ $t('game.resultModal.actions.open') }}</Button>
+        <Button @click="handleClickRetry">{{ $t('game.resultModal.actions.retry') }}</Button>
       </div>
     </div>
   </Modal>

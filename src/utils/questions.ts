@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 import { TYPE } from '@/constants/questions';
 import { Question } from '@/types/questions';
 import { useIfoodStore } from '@/stores/ifood';
@@ -19,8 +20,8 @@ const defaultQuestion = [
 
 export const getTypeQuestion = () =>
   Promise.resolve([
-    { name: TYPE.MEAL, label: 'Refeição' },
-    { name: TYPE.DESSERT, label: 'Sobremesa' },
+    { name: TYPE.MEAL, label: t('game.questions.type.meal') },
+    { name: TYPE.DESSERT, label: t('game.questions.type.dessert') },
   ]);
 
 export const getCategoryQuestion = async (type: string) => {
