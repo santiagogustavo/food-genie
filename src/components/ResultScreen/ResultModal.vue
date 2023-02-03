@@ -8,9 +8,14 @@
       <h2 class="result-modal__result">
         {{ result }}
       </h2>
+      <p>{{ $t('game.resultModal.message') }}</p>
       <div class="result-modal__actions">
-        <Button @click="handleClickOpenIfood">{{ $t('game.resultModal.actions.open') }}</Button>
-        <Button @click="handleClickRetry">{{ $t('game.resultModal.actions.retry') }}</Button>
+        <Button @click="handleClickThumbsUp">
+          <ThumbsUp />
+        </Button>
+        <Button @click="handleClickThumbsDown">
+          <ThumbsDown />
+        </Button>
       </div>
     </div>
   </Modal>
@@ -23,52 +28,39 @@ import StarFilled from '@/assets/svgs/StarFilled.vue';
 import StarOutlined from '@/assets/svgs/StarOutlined.vue';
 import Modal from '@/components/Modal.vue';
 import Button from '@/components/Button.vue';
-import { RESULT_IFOOD } from '@/constants/urls';
 import { useUserStore } from '@/stores/user';
-import ApplicationClose from '@/services/analytics/events/ApplicationClose';
+import UserSatisfaction from '@/services/analytics/events/UserSatisfaction';
 import { useFirebase } from '@/composables/firebase';
 import { useAppStore } from '@/stores/app';
 import { getDeltaTime } from '@/utils/time';
-import GameRetry from '@/services/analytics/events/GameRetry';
+import ThumbsUp from '@/components/Illustrations/ThumbsUp.vue';
+import ThumbsDown from '@/components/Illustrations/ThumbsDown.vue';
 
 const userStore = computed(() => useUserStore());
 const result = computed(() => userStore.value.stringifiedResult);
 
-const merchantId = computed(() => userStore.value.results.merchant?.name);
-const itemId = computed(() => userStore.value.results.item?.name);
+const emit = defineEmits(['like', 'dislike']);
 
-const emit = defineEmits(['close']);
-
-const logApplicationCloseEvent = (destination: string) => {
-  const deltaTime = getDeltaTime(useAppStore().timestamps[0]);
-  const applicationCloseEvent = new ApplicationClose({ deltaTime, destination });
+const logUserSatisfactionEvent = (satisfied: boolean) => {
+  const deltaTime = getDeltaTime(useAppStore().latestTimestamp);
+  const applicationCloseEvent = new UserSatisfaction({
+    deltaTime,
+    result: result.value,
+    satisfied,
+  });
   useFirebase().log(applicationCloseEvent);
 };
 
-const logGameRetryEvent = () => {
-  const deltaTime = getDeltaTime(useAppStore().latestTimestamp);
-  const gameRetryEvent = new GameRetry({ deltaTime, result: result.value, retry: true });
-  useFirebase().log(gameRetryEvent);
+const handleClickThumbsUp = () => {
+  userStore.value.setUserSatisfied(true);
+  logUserSatisfactionEvent(true);
+  emit('like');
 };
 
-const handleClose = () => {
-  emit('close');
-};
-
-const handleClickRetry = () => {
-  logGameRetryEvent();
-  userStore.value.resetAnswers();
-  userStore.value.resetResults();
-  handleClose();
-};
-
-const handleClickOpenIfood = () => {
-  if (!merchantId.value || !itemId.value) {
-    return;
-  }
-  const url = RESULT_IFOOD('city/merchant', merchantId.value, itemId.value);
-  logApplicationCloseEvent(url);
-  window.open(url);
+const handleClickThumbsDown = () => {
+  userStore.value.setUserSatisfied(false);
+  logUserSatisfactionEvent(false);
+  emit('dislike');
 };
 </script>
 

@@ -8,7 +8,6 @@ import {
   UserAnswer,
   UserSatisfaction,
   UserFeedback,
-  UserInput,
   Common,
   CommonAb,
   CommonDelta,
@@ -28,6 +27,5 @@ export type AnalyticsEvent = {
     | UserIdentified
     | UserAnswer
     | UserSatisfaction
-    | UserFeedback
-    | UserInput;
+    | UserFeedback;
 };

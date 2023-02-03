@@ -17,9 +17,20 @@
     "title": "Você prefere...?"
   },
   "resultModal": {
+    "message": "E aí, o que achou?"
+  },
+  "likeModal": {
+    "title": "A-ha! Eu sabia que era isso!",
     "actions": {
       "open": "Abrir resultado",
-      "retry": "Jogar de novo"
+      "retry": "Jogar novamente"
+    }
+  },
+  "dislikeModal": {
+    "title": "Que pena, não consegui acertar o resultado!",
+    "actions": {
+      "retry": "Tentar de novo",
+      "open": "Abrir mesmo assim"
     }
   }
 }

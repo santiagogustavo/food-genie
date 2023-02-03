@@ -6,28 +6,15 @@ import { UserFeedback as Params } from '@/interfaces/analytics';
 type Constructor = {
   deltaTime: Params['deltaTime'];
   satisfied: Params['satisfied'];
-  feedbackOptIn: Params['feedbackOptIn'];
-  likedExperience: Params['likedExperience'];
-  likedQuestions: Params['likedQuestions'];
-  likedInterface: Params['likedInterface'];
+  result: Params['result'];
   score: Params['score'];
-  message: Params['message'];
 };
 
 class UserFeedback {
   name: string;
   params: Params;
 
-  constructor({
-    deltaTime,
-    satisfied,
-    feedbackOptIn,
-    likedExperience,
-    likedQuestions,
-    likedInterface,
-    score,
-    message,
-  }: Constructor) {
+  constructor({ deltaTime, satisfied, result, score }: Constructor) {
     const userId = useUserStore().id;
     const timestamp = getTimestamp();
     const abTest = useUserStore().abTest;
@@ -39,12 +26,8 @@ class UserFeedback {
       abTest,
       deltaTime,
       satisfied,
-      feedbackOptIn,
-      likedExperience,
-      likedQuestions,
-      likedInterface,
+      result,
       score,
-      message,
     };
   }
 }

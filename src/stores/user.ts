@@ -17,6 +17,7 @@ type UserStore = {
     merchant?: Option;
     item?: Option;
   };
+  satisfied: boolean;
   loadState: LoadState;
   error?: Error;
 };
@@ -36,6 +37,7 @@ export const useUserStore = defineStore({
       merchant: undefined,
       item: undefined,
     },
+    satisfied: false,
     loadState: LoadState.INIT,
     error: undefined,
   }),
@@ -69,6 +71,9 @@ export const useUserStore = defineStore({
     },
     setResultsItem(item: Option) {
       this.results.item = item;
+    },
+    setUserSatisfied(satisfied: boolean) {
+      this.satisfied = satisfied;
     },
     fetchCurrentLocation() {
       const userStore = useUserStore();

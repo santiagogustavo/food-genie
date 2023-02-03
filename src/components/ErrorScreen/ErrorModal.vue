@@ -20,14 +20,24 @@ import Modal from '@/components/Modal.vue';
 import Button from '@/components/Button.vue';
 import { useUserStore } from '@/stores/user';
 import { useAppStore } from '@/stores/app';
+import { getDeltaTime } from '@/utils/time';
+import GameRetry from '@/services/analytics/events/GameRetry';
+import { useFirebase } from '@/composables/firebase';
 
 const userStore = computed(() => useUserStore());
 
 const emit = defineEmits(['retry']);
 
+const logGameRetryEvent = () => {
+  const deltaTime = getDeltaTime(useAppStore().latestTimestamp);
+  const gameRetryEvent = new GameRetry({ deltaTime, error: true });
+  useFirebase().log(gameRetryEvent);
+};
+
 const handleRetryGame = () => {
-  emit('retry');
+  logGameRetryEvent();
   useAppStore().setIsErrorModalOpen(false);
+  emit('retry');
 };
 
 const handleClickRetry = () => {

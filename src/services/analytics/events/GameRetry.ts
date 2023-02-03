@@ -5,15 +5,15 @@ import { GameRetry as Params } from '@/interfaces/analytics';
 
 type Constructor = {
   deltaTime: Params['deltaTime'];
-  result: Params['result'];
-  retry: Params['retry'];
+  result?: Params['result'];
+  error: Params['error'];
 };
 
 class GameRetry {
   name: string;
   params: Params;
 
-  constructor({ deltaTime, result, retry }: Constructor) {
+  constructor({ deltaTime, result, error }: Constructor) {
     const userId = useUserStore().id;
     const timestamp = getTimestamp();
     const abTest = useUserStore().abTest;
@@ -25,7 +25,7 @@ class GameRetry {
       abTest,
       deltaTime,
       result,
-      retry,
+      error,
     };
   }
 }

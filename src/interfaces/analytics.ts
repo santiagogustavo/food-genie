@@ -32,8 +32,8 @@ export interface GameEnd extends CommonAb {
 }
 
 export interface GameRetry extends CommonAb {
-  result: string;
-  retry: boolean;
+  result?: string;
+  error: boolean;
 }
 
 /* USER RELATED */
@@ -54,19 +54,11 @@ export interface UserAnswer extends CommonAb {
 
 export interface UserSatisfaction extends CommonAb {
   satisfied: boolean;
+  result: string;
 }
 
 export interface UserFeedback extends CommonAb {
   satisfied: boolean;
-  feedbackOptIn: boolean;
-  /* Optional if user opts out */
-  likedExperience?: boolean;
-  likedQuestions?: boolean;
-  likedInterface?: boolean;
-  score?: number;
-  message?: string;
-}
-
-export interface UserInput extends CommonAb {
-  input: string;
+  result: string;
+  score: number;
 }

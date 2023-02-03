@@ -6,13 +6,14 @@ import { UserSatisfaction as Params } from '@/interfaces/analytics';
 type Constructor = {
   deltaTime: Params['deltaTime'];
   satisfied: Params['satisfied'];
+  result: Params['result'];
 };
 
 class UserSatisfaction {
   name: string;
   params: Params;
 
-  constructor({ deltaTime, satisfied }: Constructor) {
+  constructor({ deltaTime, satisfied, result }: Constructor) {
     const userId = useUserStore().id;
     const timestamp = getTimestamp();
     const abTest = useUserStore().abTest;
@@ -24,6 +25,7 @@ class UserSatisfaction {
       abTest,
       deltaTime,
       satisfied,
+      result,
     };
   }
 }
