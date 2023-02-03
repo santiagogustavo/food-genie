@@ -27,7 +27,7 @@ const logUserFeedbackEvent = (score: number) => {
 };
 
 const handleRate = (score: number) => {
-  logUserFeedbackEvent(score);
+  logUserFeedbackEvent(score + 1);
   userStore.value.setScore(score);
 };
 </script>
