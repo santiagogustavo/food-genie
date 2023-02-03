@@ -1,13 +1,13 @@
-interface Common {
+export interface Common {
   userId: string;
   timestamp: string;
 }
 
-interface CommonDelta extends Common {
+export interface CommonDelta extends Common {
   deltaTime: number;
 }
 
-interface CommonAb extends CommonDelta {
+export interface CommonAb extends CommonDelta {
   abTest: boolean;
 }
 

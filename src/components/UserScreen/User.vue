@@ -33,7 +33,13 @@ import TextField from '@/components/TextField.vue';
 import MapPin from '@/assets/svgs/MapPin.vue';
 import { useUserStore } from '@/stores/user';
 import Button from '@/components/Button.vue';
-import Bibliomancy from '../Illustrations/Bibliomancy.vue';
+import UserIdentified from '@/services/analytics/events/UserIdentified';
+import UserClickMap from '@/services/analytics/events/UserClickMap';
+import UserCloseMap from '@/services/analytics/events/UserCloseMap';
+import { getDeltaTime } from '@/utils/time';
+import Bibliomancy from '@/components/Illustrations/Bibliomancy.vue';
+import { useAppStore } from '@/stores/app';
+import { useFirebase } from '@/composables/firebase';
 
 const userStore = computed(() => useUserStore());
 
@@ -45,6 +51,29 @@ const userLocation = ref();
 
 const canStartGame = computed(() => !!userName.value && !!userLocation.value);
 
+const logUserIdentifiedEvent = () => {
+  const deltaTime = getDeltaTime(useAppStore().latestTimestamp);
+  const userName = userStore.value.name;
+  const { latitude, longitude } = userStore.value.location;
+  const userIdentifiedEvent = new UserIdentified({
+    deltaTime,
+    userName,
+    latitude: Number(latitude),
+    longitude: Number(longitude),
+  });
+  useFirebase().log(userIdentifiedEvent);
+};
+
+const logUserClickMapEvent = () => {
+  const userClickMapEvent = new UserClickMap();
+  useFirebase().log(userClickMapEvent);
+};
+
+const logUserCloseMapEvent = () => {
+  const userCloseMapEvent = new UserCloseMap();
+  useFirebase().log(userCloseMapEvent);
+};
+
 const handleInputName = (event: Event) => {
   if (event.target instanceof HTMLInputElement) {
     userName.value = event.target.value;
@@ -52,16 +81,19 @@ const handleInputName = (event: Event) => {
 };
 
 const handleLocated = (location: any) => {
+  logUserCloseMapEvent();
   userLocation.value = location;
   isModalOpen.value = false;
 };
 
 const handleClickStart = () => {
   userStore.value.setName(userName.value);
+  logUserIdentifiedEvent();
   emit('start');
 };
 
 const handleOpenLocationModal = () => {
+  logUserClickMapEvent();
   isModalOpen.value = true;
 };
 </script>

@@ -20,8 +20,6 @@ import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import ApplicationStart from '@/services/analytics/events/ApplicationStart';
 import { getRandomArbitrary } from '@/utils/math';
-import UserIdentified from '@/services/analytics/events/UserIdentified';
-import { getDeltaTime } from '@/utils/time';
 import ErrorModal from '@/components/ErrorScreen/ErrorModal.vue';
 
 const appStore = computed(() => useAppStore());
@@ -46,19 +44,6 @@ const generateUserProperties = () => {
   firebase.value.setUserProperties(properties);
 };
 
-const logUserIdentifiedEvent = () => {
-  const deltaTime = getDeltaTime(appStore.value.latestTimestamp);
-  const userName = userStore.value.name;
-  const { latitude, longitude } = userStore.value.location;
-  const userIdentifiedEvent = new UserIdentified({
-    deltaTime,
-    userName,
-    latitude: Number(latitude),
-    longitude: Number(longitude),
-  });
-  firebase.value.log(userIdentifiedEvent);
-};
-
 const logApplicationStartEvent = () => {
   const queryParams = queryString.parse(location.search);
   const origin = queryParams?.origin ? String(queryParams?.origin) : 'local';
@@ -72,7 +57,6 @@ const handleAskUser = () => {
 };
 
 const handleStartGame = () => {
-  logUserIdentifiedEvent();
   currentPage.value = 2;
 };
 
