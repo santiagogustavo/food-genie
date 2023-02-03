@@ -2,6 +2,7 @@ import queryString from 'query-string';
 import { TYPE } from '@/constants/questions';
 import { MEAL, DESSERT } from '@/data/foodTypes';
 import { categories } from '@/data/filters';
+import { BLACKLIST } from '@/constants/blacklist';
 
 export const getCategoryIdFromAction = (action: string) =>
   queryString.parse(action.replace('page?', '')).identifier;
@@ -59,13 +60,11 @@ export const getMerchantFromId = (results: any, id: string) =>
 export const getMerchantFromItemId = (results: any, itemId: string) =>
   results.find((result: any) => !!result?.items?.find((item: any) => item.id === itemId));
 
-export const filterItemsFromSubcategories = (items: any, type: string) => {
-  const blacklist =
-    type === TYPE.MEAL ? ['doce', 'bebida', 'sobremesa', 'adicional'] : ['salgado', 'adicional'];
-  return items.filter((item: any) => {
+export const filterItemsFromSubcategories = (items: any, type: string) =>
+  items.filter((item: any) => {
     let valid = true;
 
-    blacklist.forEach(blocked => {
+    BLACKLIST[type].forEach(blocked => {
       if (
         item.subCatalog.toLowerCase().includes(blocked) ||
         item.description.toLowerCase().includes(blocked)
@@ -75,4 +74,3 @@ export const filterItemsFromSubcategories = (items: any, type: string) => {
     });
     return valid;
   });
-};
