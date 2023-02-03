@@ -3,6 +3,7 @@
     <div class="dislike-modal">
       <Sad class="dislike-modal__img" />
       <h3>{{ $t('game.dislikeModal.title') }}</h3>
+      <Feedback class="like-modal__feedback" />
       <div class="dislike-modal__actions">
         <Button @click="handleClickRetry">{{ $t('game.dislikeModal.actions.retry') }}</Button>
         <Button @click="handleClickOpen">{{ $t('game.dislikeModal.actions.open') }}</Button>
@@ -13,6 +14,7 @@
 
 <script setup lang="ts">
 import Sad from '@/components/Illustrations/Sad.vue';
+import Feedback from '@/components/Feedback/Feedback.vue';
 
 import Modal from '@/components/Modal.vue';
 import Button from '@/components/Button.vue';
@@ -43,6 +45,10 @@ const handleClickOpen = () => {
   @include screen-s {
     min-width: initial;
     max-width: initial;
+  }
+
+  &__feedback {
+    margin: 40px 0;
   }
 
   &__img {

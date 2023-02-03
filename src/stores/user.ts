@@ -18,6 +18,7 @@ type UserStore = {
     item?: Option;
   };
   satisfied: boolean;
+  score: number;
   loadState: LoadState;
   error?: Error;
 };
@@ -38,6 +39,7 @@ export const useUserStore = defineStore({
       item: undefined,
     },
     satisfied: false,
+    score: -1,
     loadState: LoadState.INIT,
     error: undefined,
   }),
@@ -74,6 +76,9 @@ export const useUserStore = defineStore({
     },
     setUserSatisfied(satisfied: boolean) {
       this.satisfied = satisfied;
+    },
+    setScore(score: number) {
+      this.score = score;
     },
     fetchCurrentLocation() {
       const userStore = useUserStore();

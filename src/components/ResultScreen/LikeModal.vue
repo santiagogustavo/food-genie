@@ -3,7 +3,7 @@
     <div class="like-modal">
       <Grin class="like-modal__img" />
       <h3>{{ $t('game.likeModal.title') }}</h3>
-      <br />
+      <Feedback class="like-modal__feedback" />
       <div class="like-modal__actions">
         <Button @click="handleClickOpen">{{ $t('game.likeModal.actions.open') }}</Button>
         <Button @click="handleClickRetry">{{ $t('game.likeModal.actions.retry') }}</Button>
@@ -17,6 +17,7 @@ import Grin from '@/components/Illustrations/Grin.vue';
 
 import Modal from '@/components/Modal.vue';
 import Button from '@/components/Button.vue';
+import Feedback from '@/components/Feedback/Feedback.vue';
 
 const emit = defineEmits(['open', 'retry']);
 
@@ -44,6 +45,10 @@ const handleClickOpen = () => {
   @include screen-s {
     min-width: initial;
     max-width: initial;
+  }
+
+  &__feedback {
+    margin: 40px 0;
   }
 
   &__img {

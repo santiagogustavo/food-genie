@@ -3,5 +3,6 @@
     "title": "Ops, parece que algo não funcionou!",
     "message": "Pode ser que os restaurantes não estejam abertos ou o item procurado não está disponível",
     "retry": "Jogar de novo"
-  }
+  },
+  "feedback": "Gostou do jogo? Me avalie:"
 }
