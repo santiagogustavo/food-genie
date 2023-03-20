@@ -45,4 +45,4 @@ export const MEAL = [
   'YA1',
 ];
 
-export const DESSERT = ['AC1', 'BEB', 'CA1', 'CS1', 'CP1', 'DCE', 'PIZ', 'SOR', 'TA1'];
+export const DESSERT = ['AC1', 'CA1', 'CS1', 'CP1', 'DCE', 'PIZ', 'SOR', 'TA1'];
