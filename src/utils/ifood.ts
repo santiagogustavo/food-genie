@@ -2,7 +2,8 @@ import queryString from 'query-string';
 import { TYPE } from '@/constants/questions';
 import { MEAL, DESSERT } from '@/data/foodTypes';
 import { categories } from '@/data/filters';
-import { BLACKLIST } from '@/constants/blacklist';
+import { BLACKLIST, WHITELIST } from '@/constants/blacklist';
+import { useUserStore } from '@/stores/user';
 
 export const getCategoryIdFromAction = (action: string) =>
   queryString.parse(action.replace('page?', '')).identifier;
@@ -60,17 +61,35 @@ export const getMerchantFromId = (results: any, id: string) =>
 export const getMerchantFromItemId = (results: any, itemId: string) =>
   results.find((result: any) => !!result?.items?.find((item: any) => item.id === itemId));
 
-export const filterItemsFromSubcategories = (items: any, type: string) =>
-  items.filter((item: any) => {
-    let valid = true;
+export const filterItemsFromSubcategories = (items: any, type: string) => {
+  const isSelectedCategoryAlsoMeal = useUserStore().answers[1].label.includes(' Doce');
+
+  const filteredItems = items.filter((item: any) => {
+    const itemCatalog = item.subCatalog.toLowerCase();
+    const description = item.description.toLowerCase();
+    let valid = false;
+
+    if (isSelectedCategoryAlsoMeal && WHITELIST[type]) {
+      WHITELIST[type].find(allowed => {
+        if (itemCatalog.includes(allowed) || description.includes(allowed)) {
+          valid = true;
+          return true;
+        } else {
+          return false;
+        }
+      });
+    } else {
+      valid = true;
+    }
 
     BLACKLIST[type].forEach(blocked => {
-      if (
-        item.subCatalog.toLowerCase().includes(blocked) ||
-        item.description.toLowerCase().includes(blocked)
-      ) {
+      if (itemCatalog.includes(blocked) || description.includes(blocked)) {
         valid = false;
       }
     });
+
     return valid;
   });
+
+  return filteredItems;
+};

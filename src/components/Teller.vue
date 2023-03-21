@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import TellerReaction from '@/components/TellerReaction.vue';
 import CardsDeck from '@/components/Cards/CardsDeck.vue';
 import CardsTable from '@/components/Cards/CardsTable.vue';
@@ -44,6 +44,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const questionTimeout = ref();
 
 const appStore = computed(() => useAppStore());
 const userStore = computed(() => useUserStore());
@@ -165,7 +167,7 @@ watch(
     if (!next || props.hasAnsweredAllQuestions) {
       return;
     }
-    setTimeout(() => {
+    questionTimeout.value = setTimeout(() => {
       handleAskQuestion();
     }, props.tellerTimeout);
   }
@@ -182,10 +184,15 @@ watch(
     questionAlternatives.value = nextAlternatives;
 
     if (questionAlternatives.value[0]?.name === questionAlternatives?.value[1]?.name) {
+      clearTimeout(questionTimeout.value);
       handleAnswerQuestion(questionAlternatives.value[0]);
     }
   }
 );
+
+onBeforeUnmount(() => {
+  clearTimeout(questionTimeout.value);
+});
 
 onMounted(async () => {
   if (props.hasAnsweredAllQuestions) {
@@ -197,7 +204,7 @@ onMounted(async () => {
     currentQuestion.value,
     userStore.value.latestAnswer?.name
   );
-  setTimeout(() => {
+  questionTimeout.value = setTimeout(() => {
     handleAskQuestion();
   }, props.tellerTimeout);
 });
