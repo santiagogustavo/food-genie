@@ -102,8 +102,8 @@ export const getFillingOrToppingQuestion = async (categoryId: string) => {
     const itemB = getRandomFromArrayDedup(catalog, itemA, 'id');
 
     return Promise.resolve([
-      { name: itemA?.id, label: itemA?.description },
-      { name: itemB?.id, label: itemB?.description },
+      { name: itemA?.id, label: `${itemA?.subCatalog} - ${itemA?.description}` },
+      { name: itemB?.id, label: `${itemB?.subCatalog} - ${itemB?.description}` },
     ]);
   } catch {
     useAppStore().setIsErrorModalOpen(true);

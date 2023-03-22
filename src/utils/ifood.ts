@@ -11,6 +11,9 @@ export const getCategoryIdFromAction = (action: string) =>
 export const getMerchantIdFromAction = (action: string) =>
   queryString.parse(action.replace('merchant?', '')).identifier;
 
+export const getMerchantSlugFromAction = (action: string) =>
+  queryString.parse(action.replace('merchant?', '')).slug;
+
 export const getCategoryData = (id: string) => categories.find(category => category.id === id);
 
 export const getCategoryDataFromLabel = (label: string) =>
@@ -64,23 +67,21 @@ export const getMerchantFromItemId = (results: any, itemId: string) =>
 export const filterItemsFromSubcategories = (items: any, type: string) => {
   const isSelectedCategoryAlsoMeal = useUserStore().answers[1].label.includes(' Doce');
 
-  const filteredItems = items.filter((item: any) => {
-    const itemCatalog = item.subCatalog.toLowerCase();
-    const description = item.description.toLowerCase();
+  const filterByWhitelist = (itemCatalog: string, description: string) => {
     let valid = false;
 
-    if (isSelectedCategoryAlsoMeal && WHITELIST[type]) {
-      WHITELIST[type].find(allowed => {
-        if (itemCatalog.includes(allowed) || description.includes(allowed)) {
-          valid = true;
-          return true;
-        } else {
-          return false;
-        }
-      });
-    } else {
-      valid = true;
-    }
+    WHITELIST[type].find(allowed => {
+      if (itemCatalog.includes(allowed) || description.includes(allowed)) {
+        valid = true;
+        return;
+      }
+    });
+
+    return valid;
+  };
+
+  const filterByBlacklist = (itemCatalog: string, description: string) => {
+    let valid = true;
 
     BLACKLIST[type].forEach(blocked => {
       if (itemCatalog.includes(blocked) || description.includes(blocked)) {
@@ -89,6 +90,17 @@ export const filterItemsFromSubcategories = (items: any, type: string) => {
     });
 
     return valid;
+  };
+
+  const filteredItems = items.filter((item: any) => {
+    const itemCatalog = item.subCatalog.toLowerCase();
+    const description = item.description.toLowerCase();
+
+    if (isSelectedCategoryAlsoMeal && WHITELIST[type]) {
+      return filterByWhitelist(itemCatalog, description);
+    } else {
+      return filterByBlacklist(itemCatalog, description);
+    }
   });
 
   return filteredItems;

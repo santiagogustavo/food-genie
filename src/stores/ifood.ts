@@ -4,7 +4,11 @@ import { postCategoryPage, postMerchantCatalog, postSearchHome } from '@/service
 import { useAppStore } from '@/stores/app';
 import { useUserStore } from '@/stores/user';
 import { LoadState } from '@/types/state';
-import { getItemsFromCatalogPayload, getSearchResultsFromPayload } from '@/utils/ifood';
+import {
+  getItemsFromCatalogPayload,
+  getMerchantSlugFromAction,
+  getSearchResultsFromPayload,
+} from '@/utils/ifood';
 
 type IfoodStore = {
   loadState: LoadState;
@@ -104,5 +108,9 @@ export const useIfoodStore = defineStore({
   getters: {
     isLoading: state => state.loadState === LoadState.PENDING,
     hasResults: state => state.loadState === LoadState.RESOLVED,
+    getMerchantSlug: state => (merchantId: string) => {
+      const merchant = state.merchants?.find((merchant: any) => merchant.id === merchantId);
+      return getMerchantSlugFromAction(merchant.action);
+    },
   },
 });

@@ -40,6 +40,7 @@ import { useUserStore } from '@/stores/user';
 import LikeModal from '@/components/ResultScreen/LikeModal.vue';
 import DislikeModal from '@/components/ResultScreen/DislikeModal.vue';
 import { RESULT_IFOOD } from '@/constants/urls';
+import { useIfoodStore } from '@/stores/ifood';
 
 const isResultModalOpen = ref(false);
 const isLikeDislikeModalOpen = ref(false);
@@ -107,7 +108,8 @@ const handleOpenIfood = () => {
   if (!merchantId.value || !itemId.value) {
     return;
   }
-  const url = RESULT_IFOOD('city/merchant', merchantId.value, itemId.value);
+  const slug = String(useIfoodStore().getMerchantSlug(merchantId.value)) || 'city/merchant';
+  const url = RESULT_IFOOD(slug, merchantId.value, itemId.value);
   logApplicationCloseEvent(url);
   window.open(url);
 };
