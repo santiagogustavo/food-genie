@@ -12,8 +12,8 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
-    "@firebase/analytics": "^0.9.1",
-    "@firebase/app": "^0.9.1",
+    "@firebase/analytics": "^0.9.4",
+    "@firebase/app": "^0.9.5",
     "axios": "^1.2.2",
     "classnames": "^2.3.2",
     "dompurify": "^2.4.3",
